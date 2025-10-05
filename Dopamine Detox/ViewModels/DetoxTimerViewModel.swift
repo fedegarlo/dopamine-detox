@@ -1,5 +1,6 @@
-import Foundation
 import Combine
+import Foundation
+import RevenueCat
 
 @MainActor
 final class DetoxTimerViewModel: ObservableObject {
@@ -47,6 +48,24 @@ final class DetoxTimerViewModel: ObservableObject {
         isRunning = true
         showCelebration = false
         startTimer()
+    }
+
+    func requiresPaywallBeforeStartingSession() async -> (requiresPaywall: Bool, errorMessage: String?) {
+        let completedSessions = appState.completedSessionCount
+        guard completedSessions >= 1 else {
+            return (false, nil)
+        }
+
+        do {
+            let customerInfo = try await Purchases.shared.customerInfo()
+            let hasActiveEntitlement = customerInfo.entitlements.active.isEmpty == false
+            return (!hasActiveEntitlement, nil)
+        } catch {
+            return (
+                true,
+                "No pudimos verificar tu suscripción en este momento. Revisa tu conexión e inténtalo de nuevo."
+            )
+        }
     }
 
     func cancelSession() {
