@@ -47,7 +47,7 @@ struct JournalView: View {
                             description: Text("Capture how your mind reacts during detox sessions.")
                         )
                     } else {
-                        ForEach(appState.journalEntries, id: \.id) { entry in
+                        ForEach(appState.journalEntries) { entry in
                             VStack(alignment: .leading, spacing: 8) {
                                 HStack {
                                     Text(entry.prompt)

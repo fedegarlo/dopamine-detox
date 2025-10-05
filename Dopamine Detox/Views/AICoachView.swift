@@ -87,7 +87,7 @@ struct AICoachView: View {
                 Text(message.text)
                     .padding(12)
                     .background(message.sender == .coach ? Color.accentColor.opacity(0.15) : Color.accentColor)
-                    .foregroundStyle(message.sender == .coach ? .primary : .white)
+                    .foregroundColor(message.sender == .coach ? .primary : .white)
                     .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
                 Text(message.timestamp, style: .time)
                     .font(.caption2)
