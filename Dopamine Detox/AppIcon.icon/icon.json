@@ -4,19 +4,83 @@
   },
   "groups" : [
     {
+      "blend-mode-specializations" : [
+        {
+          "value" : "normal"
+        },
+        {
+          "appearance" : "dark",
+          "value" : "normal"
+        }
+      ],
+      "blur-material" : 0.21,
       "layers" : [
         {
+          "blend-mode" : "normal",
+          "fill-specializations" : [
+            {
+              "value" : {
+                "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
+              }
+            },
+            {
+              "appearance" : "dark",
+              "value" : {
+                "solid" : "display-p3:0.63983,0.34202,0.84384,1.00000"
+              }
+            }
+          ],
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "cross.fill 1.png",
+          "name" : "cross.fill 1",
+          "opacity" : 1,
+          "position" : {
+            "scale" : 0.22,
+            "translation-in-points" : [
+              -0.3671875,
+              49.6953125
+            ]
+          }
+        }
+      ],
+      "lighting" : "individual",
+      "opacity" : 1,
+      "position" : {
+        "scale" : 1.02,
+        "translation-in-points" : [
+          0.0546875,
+          -0.5546875
+        ]
+      },
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "specular" : true,
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0
+      }
+    },
+    {
+      "blend-mode" : "normal",
+      "blur-material" : null,
+      "layers" : [
+        {
+          "blend-mode" : "overlay",
           "fill" : {
             "automatic-gradient" : "srgb:1.00000,1.00000,1.00000,1.00000"
           },
-          "glass" : false,
+          "glass" : true,
           "image-name" : "cross.case.fill 1.png",
           "name" : "cross.case.fill 1",
+          "opacity" : 0.5,
           "position" : {
-            "scale" : 0.52,
+            "scale" : 0.5,
             "translation-in-points" : [
-              -0.1484375,
-              -28.828125
+              0,
+              0
             ]
           }
         }
@@ -26,10 +90,10 @@
         "kind" : "neutral",
         "opacity" : 0.5
       },
-      "specular" : false,
+      "specular" : true,
       "translucency" : {
         "enabled" : true,
-        "value" : 0.5
+        "value" : 0.28
       }
     }
   ],
