@@ -2,27 +2,35 @@ import Foundation
 import Combine
 import os.log
 import UIKit
-#if canImport(FocusConfiguration)
-import FocusConfiguration
-#endif
-#if canImport(FocusConfigurationUI)
-import FocusConfigurationUI
-#endif
+
+enum AuthorizationStatus {
+    case notDetermined
+    case restricted
+    case denied
+    case authorized
+}
+
+@available(iOS 17, *)
+protocol FocusManaging {
+    var authorizationStatus: AuthorizationStatus { get }
+    func requestAuthorization() async throws
+}
 
 @MainActor
 final class FocusAutomationManager: ObservableObject {
+    private static let minimumSupportedVersion = OperatingSystemVersion(majorVersion: 17, minorVersion: 0, patchVersion: 0)
     
     static let shared = FocusAutomationManager()
 
     enum Status: Equatable {
-        case unsupported
+        case unsupported(reason: String)
         case needsAuthorization
         case denied
         case needsConfiguration
         case ready(name: String)
     }
 
-    @Published private(set) var status: Status = .unsupported
+    @Published private(set) var status: Status = .unsupported(reason: "Inicializando...")
     @Published private(set) var isActivatingFocus = false
     @Published private(set) var isDeactivatingFocus = false
 
@@ -40,7 +48,7 @@ final class FocusAutomationManager: ObservableObject {
 #if canImport(FocusConfiguration)
         guard #available(iOS 17, *) else {
             logger.info("refreshStatus: iOS below 17; FocusConfiguration requires iOS 17+; marking unsupported")
-            status = .unsupported
+            status = .unsupported(reason: "iOS 17 o superior requerido")
             return
         }
 
@@ -77,7 +85,7 @@ final class FocusAutomationManager: ObservableObject {
         logger.info("refreshStatus: mapped app status = \(String(describing: status), privacy: .public)")
 #else
         logger.info("refreshStatus: FocusConfiguration not available at compile time (canImport failed); marking unsupported")
-        status = .unsupported
+        status = .unsupported(reason: "Focus no disponible en este dispositivo")
 #endif
     }
 
