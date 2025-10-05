@@ -21,7 +21,7 @@ struct AchievementsView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             Image(systemName: achievement.systemImage)
                                 .font(.largeTitle)
-                                .foregroundStyle(achievement.isUnlocked ? .accent : .secondary)
+                                .foregroundStyle(achievement.isUnlocked ? Color.accentColor : .secondary)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             Text(achievement.title)
                                 .font(.headline)
