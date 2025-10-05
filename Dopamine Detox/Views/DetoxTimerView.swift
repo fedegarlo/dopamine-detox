@@ -77,29 +77,58 @@ struct DetoxTimerView: View {
 
                 HStack(spacing: 16) {
                     if viewModel.isRunning {
-                        Button(role: .destructive) {
-                            viewModel.cancelSession()
-                        } label: {
-                            Label("Abort", systemImage: "xmark.circle")
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical)
-                        }
-                        .buttonStyle(.bordered)
-                    } else {
-                        Button {
-                            handleStartTapped()
-                        } label: {
-                            if isCheckingAccess {
-                                ProgressView()
+                        if #available(iOS 15.0, *) {
+                            Button(role: .destructive) {
+                                viewModel.cancelSession()
+                            } label: {
+                                Label("Abort", systemImage: "xmark.circle")
                                     .frame(maxWidth: .infinity)
-                            } else {
-                                Label("Start detox", systemImage: "play.circle.fill")
-                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical)
                             }
+                            .buttonStyle(.bordered)
+                        } else {
+                            Button {
+                                viewModel.cancelSession()
+                            } label: {
+                                Label("Abort", systemImage: "xmark.circle")
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical)
+                            }
+                            .buttonStyle(DefaultButtonStyle())
                         }
-                        .buttonStyle(.borderedProminent)
-                        .controlSize(.large)
-                        .disabled(isCheckingAccess)
+                    } else {
+                        if #available(iOS 15.0, *) {
+                            Button {
+                                handleStartTapped()
+                            } label: {
+                                if isCheckingAccess {
+                                    ProgressView()
+                                        .frame(maxWidth: .infinity)
+                                } else {
+                                    Label("Start detox", systemImage: "play.circle.fill")
+                                        .frame(maxWidth: .infinity)
+                                        .padding(.vertical)
+                                }
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .controlSize(.large)
+                            .disabled(isCheckingAccess)
+                        } else {
+                            Button {
+                                handleStartTapped()
+                            } label: {
+                                if isCheckingAccess {
+                                    ProgressView()
+                                        .frame(maxWidth: .infinity)
+                                } else {
+                                    Label("Start detox", systemImage: "play.circle.fill")
+                                        .frame(maxWidth: .infinity)
+                                        .padding(.vertical)
+                                }
+                            }
+                            .buttonStyle(DefaultButtonStyle())
+                            .disabled(isCheckingAccess)
+                        }
                     }
                 }
                 .padding(.horizontal)
@@ -207,11 +236,17 @@ private struct FocusAutomationCard: View {
                 .foregroundStyle(.secondary)
 
             if let actionTitle = actionTitle {
-                Button(actionTitle) {
-                    Task { await performPrimaryAction() }
+                if #available(iOS 15.0, *) {
+                    Button(actionTitle) {
+                        Task { await performPrimaryAction() }
+                    }
+                    .controlSize(.small)
+                } else {
+                    Button(actionTitle) {
+                        Task { await performPrimaryAction() }
+                    }
+                    .buttonStyle(DefaultButtonStyle())
                 }
-                .buttonStyle(useProminentButton ? .borderedProminent : .bordered)
-                .controlSize(.small)
             }
         }
         .padding()

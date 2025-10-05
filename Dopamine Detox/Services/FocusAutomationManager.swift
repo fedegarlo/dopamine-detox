@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import os.log
 import UIKit
 #if canImport(FocusConfiguration)
@@ -10,6 +11,7 @@ import FocusConfigurationUI
 
 @MainActor
 final class FocusAutomationManager: ObservableObject {
+    
     static let shared = FocusAutomationManager()
 
     enum Status: Equatable {
@@ -37,11 +39,18 @@ final class FocusAutomationManager: ObservableObject {
     func refreshStatus() {
 #if canImport(FocusConfiguration)
         guard #available(iOS 17, *) else {
+            logger.info("refreshStatus: iOS below 17; FocusConfiguration requires iOS 17+; marking unsupported")
             status = .unsupported
             return
         }
 
-        switch FocusConfigurationManager.shared.authorizationStatus {
+        let authStatus = FocusConfigurationManager.shared.authorizationStatus
+        let osVersion = ProcessInfo.processInfo.operatingSystemVersionString
+        let authStatusDescription = String(describing: authStatus)
+        let storedIdString = (storedConfigurationIdentifier != nil) ? "yes" : "no"
+        let storedNameString = storedConfigurationName ?? "nil"
+        logger.info("refreshStatus: iOS \(osVersion, privacy: .public); FocusConfiguration authStatus = \(authStatusDescription, privacy: .public); storedID=\(storedIdString, privacy: .public); storedName=\(storedNameString, privacy: .public)")
+        switch authStatus {
         case .notDetermined:
             status = .needsAuthorization
         case .restricted, .denied:
@@ -53,9 +62,21 @@ final class FocusAutomationManager: ObservableObject {
                 status = .needsConfiguration
             }
         @unknown default:
-            status = .unsupported
+            // Fallback for future iOS versions introducing new authorization states.
+            // Do not mark as unsupported; prefer a conservative, user-friendly state.
+            if let name = storedConfigurationName {
+                status = .ready(name: name)
+            } else if storedConfigurationIdentifier != nil {
+                status = .ready(name: "Focus")
+            } else {
+                // If we don't have a stored configuration yet, prompt the user to authorize/configure.
+                status = .needsAuthorization
+            }
+            logger.warning("Unknown Focus authorizationStatus encountered; applying fallback")
         }
+        logger.info("refreshStatus: mapped app status = \(String(describing: status), privacy: .public)")
 #else
+        logger.info("refreshStatus: FocusConfiguration not available at compile time (canImport failed); marking unsupported")
         status = .unsupported
 #endif
     }
@@ -187,3 +208,4 @@ final class FocusAutomationManager: ObservableObject {
     }
 #endif
 }
+

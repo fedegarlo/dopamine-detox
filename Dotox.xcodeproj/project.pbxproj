@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5AE3D9902E92B84400907AC9 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 5AE3D98F2E92B84400907AC9 /* RevenueCat */; };
 		5AE3D9922E92B84400907AC9 /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5AE3D9912E92B84400907AC9 /* RevenueCatUI */; };
+		5AE3D9CB2E92C85700907AC9 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AE3D9CA2E92C85700907AC9 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +33,7 @@
 		5AE3D8F72E9261D700907AC9 /* Dotox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dotox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AE3D9082E9261D900907AC9 /* DotoxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DotoxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AE3D9122E9261D900907AC9 /* DotoxUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DotoxUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5AE3D9CA2E92C85700907AC9 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -70,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AE3D9CB2E92C85700907AC9 /* StoreKit.framework in Frameworks */,
 				5AE3D9922E92B84400907AC9 /* RevenueCatUI in Frameworks */,
 				5AE3D9902E92B84400907AC9 /* RevenueCat in Frameworks */,
 			);
@@ -98,6 +101,7 @@
 				5AE3D8F92E9261D700907AC9 /* Dopamine Detox */,
 				5AE3D90B2E9261D900907AC9 /* Dopamine DetoxTests */,
 				5AE3D9152E9261D900907AC9 /* Dopamine DetoxUITests */,
+				5AE3D9C92E92C85700907AC9 /* Frameworks */,
 				5AE3D8F82E9261D700907AC9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -110,6 +114,14 @@
 				5AE3D9122E9261D900907AC9 /* DotoxUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		5AE3D9C92E92C85700907AC9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5AE3D9CA2E92C85700907AC9 /* StoreKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -301,6 +313,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = HSL8ATRC8B;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -349,6 +362,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = HSL8ATRC8B;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -424,6 +438,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = HSL8ATRC8B;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -447,6 +462,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -486,6 +502,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = HSL8ATRC8B;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -502,6 +519,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 			};
 			name = Release;
@@ -512,6 +530,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = HSL8ATRC8B;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
@@ -538,6 +557,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = HSL8ATRC8B;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
@@ -563,6 +583,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = HSL8ATRC8B;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
@@ -588,6 +609,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = HSL8ATRC8B;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
