@@ -1,0 +1,496 @@
+{
+  "meta": {
+    "spec_version": "1.0.0",
+    "generated_at": "2025-10-05T10:19:21.070494+02:00",
+    "project_name": "Dopamine Detox",
+    "bundle_id_suggestion": "com.yourcompany.DopamineDetox",
+    "platform": "iOS",
+    "min_ios_version": "17.0",
+    "primary_language": "en-US",
+    "secondary_languages": [
+      "es-ES"
+    ],
+    "category": "Health & Fitness",
+    "tags": [
+      "dopamine detox",
+      "focus",
+      "mindfulness",
+      "habit tracking",
+      "AI coach",
+      "journaling",
+      "screen time"
+    ],
+    "goals": [
+      "Help users reduce digital overstimulation",
+      "Build sustainable focus habits",
+      "Provide a gentle, motivational experience with minimal friction"
+    ]
+  },
+  "product": {
+    "positioning": "Minimal digital-wellbeing app to rebalance your mind and rebuild focus through short detox sessions and mindful routines.",
+    "value_props": [
+      "1-tap detox sessions with optional Focus Filters integration",
+      "Low-friction daily journaling with AI summaries",
+      "Progress visuals and streaks that motivate without pressure",
+      "Optional AI Coach that adapts to your triggers and goals"
+    ],
+    "personas": [
+      {
+        "name": "Creator under overload",
+        "need": "escape doomscrolling, regain deep work blocks"
+      },
+      {
+        "name": "Student",
+        "need": "improve study focus and sleep hygiene"
+      },
+      {
+        "name": "Knowledge worker",
+        "need": "reduce notifications and context switching"
+      }
+    ]
+  },
+  "features": {
+    "onboarding_test": {
+      "questions": 8,
+      "scoring": "0-100 DopamineIndex (higher => more overstimulated)",
+      "storage": "UserDefaults + optional CloudKit sync",
+      "cta_examples": [
+        "You're overstimulated — start a 3‑day detox",
+        "Great baseline — try a 1‑hour focus loop today"
+      ]
+    },
+    "detox_mode": {
+      "durations": [
+        "1h",
+        "3h",
+        "1d",
+        "3d",
+        "7d"
+      ],
+      "timer": "foreground + background safe countdown with local notifications",
+      "focus_filters": "Optional integration to silence notifications during session",
+      "rewards": [
+        "streak increment",
+        "celebration animation",
+        "points: clarity"
+      ],
+      "fail_conditions": [
+        "session aborted",
+        "screen-time spike detected (optional)"
+      ]
+    },
+    "journal": {
+      "entry_types": [
+        "text",
+        "voice (transcribed locally)"
+      ],
+      "ai_summary": "Foundation Models on-device if available; otherwise system fallback off",
+      "prompts": [
+        "What felt real today?",
+        "How did your mind react to silence?"
+      ],
+      "storage": "CoreData entities with daily rollups"
+    },
+    "progress_dashboard": {
+      "charts": [
+        "streak line",
+        "total detox hours bar",
+        "DopamineIndex trend"
+      ],
+      "milestones": [
+        "24h",
+        "3d",
+        "7d",
+        "14d",
+        "30d"
+      ],
+      "exports": [
+        "CSV (local share sheet)"
+      ]
+    },
+    "ai_coach": {
+      "persona": "Luma (empathetic, concise, practical)",
+      "capabilities": [
+        "behavioral tips",
+        "weekly plan",
+        "gentle check-ins"
+      ],
+      "privacy": "process on-device if Foundation Models available; never sell data"
+    },
+    "achievements": {
+      "badges": [
+        {
+          "id": "clean_mind_24h",
+          "title": "Clean Mind",
+          "desc": "Complete a 24h detox"
+        },
+        {
+          "id": "focused_soul_7d",
+          "title": "Focused Soul",
+          "desc": "Maintain a 7‑day streak"
+        },
+        {
+          "id": "digital_monk",
+          "title": "Digital Monk",
+          "desc": "30 days of mindful focus"
+        }
+      ]
+    }
+  },
+  "user_flow": [
+    "Splash → Onboarding → Dopamine Test → Result → Dashboard",
+    "Dashboard → Detox Mode → Completion → Rewards",
+    "Dashboard → Journal (AI summary optional)",
+    "Dashboard → AI Coach (Premium)",
+    "Dashboard → Achievements → Share"
+  ],
+  "ui": {
+    "style": "Minimal, calm; soft motion; mindful spacing",
+    "colors": {
+      "background": "#F9F5F0",
+      "primary": "#1C2331",
+      "accent": "#FF8A65"
+    },
+    "typography": {
+      "headline": 28,
+      "body": 16
+    },
+    "icons": [
+      "brain.head.profile",
+      "moon.zzz",
+      "leaf.fill"
+    ],
+    "dark_mode": true,
+    "animations": [
+      "easeInOut fades",
+      "gentle scale on completion"
+    ]
+  },
+  "architecture": {
+    "frameworks": [
+      "SwiftUI",
+      "Combine",
+      "WidgetKit",
+      "StoreKit",
+      "Charts"
+    ],
+    "storage": {
+      "local": "CoreData",
+      "sync": "CloudKit (optional)"
+    },
+    "ai": {
+      "foundation_models": [
+        "text-summarization",
+        "chat"
+      ]
+    },
+    "notifications": "UNUserNotificationCenter for local alerts",
+    "background_tasks": [
+      "BGAppRefreshTask for daily check‑ins (optional)"
+    ]
+  },
+  "data_models": {
+    "UserProfile": {
+      "id": "UUID",
+      "dopamineIndex": "Int",
+      "streakDays": "Int",
+      "createdAt": "Date"
+    },
+    "DetoxSession": {
+      "id": "UUID",
+      "start": "Date",
+      "end": "Date",
+      "durationSec": "Int",
+      "completed": "Bool"
+    },
+    "JournalEntry": {
+      "id": "UUID",
+      "date": "Date",
+      "text": "String",
+      "mood": "Int?",
+      "aiSummary": "String?"
+    },
+    "Achievement": {
+      "id": "String",
+      "earnedAt": "Date"
+    },
+    "Settings": {
+      "focusFiltersEnabled": "Bool",
+      "remindersEnabled": "Bool",
+      "theme": "String"
+    }
+  },
+  "permissions": [
+    "Notification permission (for session end reminders)",
+    "Speech recognition (if voice-to-text journal enabled)",
+    "HealthKit: none required by default"
+  ],
+  "ai": {
+    "coach_tone": "empathetic, concise, non-judgmental",
+    "guardrails": [
+      "No medical advice; suggest seeing a professional for clinical issues",
+      "Avoid shaming; promote gradual change and self-compassion"
+    ],
+    "prompts_examples": [
+      "User: I broke my detox. Coach: That’s okay—progress isn’t linear. What tiny win can we aim for today?",
+      "User: I can’t focus. Coach: Let’s try a 25‑minute focus loop with a 3‑minute reset. Ready?"
+    ]
+  },
+  "notifications": {
+    "use_cases": [
+      "Session completed",
+      "Daily gentle reminder at user-selected time",
+      "Streak milestone celebration"
+    ]
+  },
+  "widgets": {
+    "focus_timer_widget": {
+      "small": "Remaining time",
+      "medium": "Remaining + streak",
+      "intent": "Start 25‑minute loop"
+    }
+  },
+  "monetization": {
+    "free": [
+      "Detox Mode",
+      "Onboarding Test",
+      "Basic Journal",
+      "Basic Charts"
+    ],
+    "premium": [
+      "AI Coach",
+      "Advanced stats",
+      "Longer sessions",
+      "Custom themes"
+    ],
+    "iap": {
+      "type": "auto-renewing subscription",
+      "monthly_usd": 1.99,
+      "yearly_usd": 14.99
+    }
+  },
+  "privacy": {
+    "data_policy": "Local-first. Cloud sync optional. No selling data. No third-party trackers.",
+    "app_tracking": "ATT not required; no cross-app tracking",
+    "compliance": [
+      "GDPR",
+      "App Store Review Guidelines"
+    ]
+  },
+  "localization": {
+    "supported": [
+      "en-US",
+      "es-ES"
+    ],
+    "strings_examples": {
+      "en": {
+        "title": "Dopamine Detox",
+        "tagline": "Rewire your mind for calm and focus",
+        "start_session": "Start Detox",
+        "end_session": "End Detox",
+        "journal_placeholder": "What felt real today?"
+      },
+      "es": {
+        "title": "Dopamine Detox",
+        "tagline": "Reentrena tu mente para la calma y el enfoque",
+        "start_session": "Iniciar Detox",
+        "end_session": "Terminar Detox",
+        "journal_placeholder": "¿Qué se sintió real hoy?"
+      }
+    }
+  },
+  "roadmap": [
+    {
+      "phase": "MVP (Weeks 1-3)",
+      "items": [
+        "Onboarding",
+        "Detox timer",
+        "Basic journal",
+        "Local notifications",
+        "Dashboard basic"
+      ]
+    },
+    {
+      "phase": "Premium (Weeks 4-5)",
+      "items": [
+        "AI coach",
+        "Subscriptions",
+        "Advanced charts"
+      ]
+    },
+    {
+      "phase": "Polish (Weeks 6+)",
+      "items": [
+        "Widgets",
+        "Animations",
+        "CloudKit sync",
+        "Localization review"
+      ]
+    }
+  ],
+  "tasks_for_codex": [
+    {
+      "task": "CreateSwiftProject",
+      "details": {
+        "name": "DopamineDetox",
+        "bundleId": "com.yourcompany.DopamineDetox",
+        "swiftui": true
+      }
+    },
+    {
+      "task": "AddDataModels",
+      "details": [
+        "UserProfile",
+        "DetoxSession",
+        "JournalEntry",
+        "Achievement",
+        "Settings"
+      ]
+    },
+    {
+      "task": "ImplementOnboardingTest",
+      "details": {
+        "questions": 8,
+        "scoreRange": "0-100",
+        "store": "UserDefaults"
+      }
+    },
+    {
+      "task": "DetoxTimerView",
+      "details": {
+        "durations": [
+          "1h",
+          "3h",
+          "1d",
+          "3d",
+          "7d"
+        ],
+        "localNotifications": true
+      }
+    },
+    {
+      "task": "JournalView",
+      "details": {
+        "coreData": true,
+        "voiceToTextOptional": true
+      }
+    },
+    {
+      "task": "DashboardView",
+      "details": {
+        "charts": true,
+        "streaks": true
+      }
+    },
+    {
+      "task": "AICoachChat",
+      "details": {
+        "foundationModels": true,
+        "guardrails": true
+      }
+    },
+    {
+      "task": "AchievementsView",
+      "details": {
+        "badges": 3
+      }
+    },
+    {
+      "task": "StoreKitSetup",
+      "details": {
+        "subscription": [
+          "monthly",
+          "yearly"
+        ]
+      }
+    },
+    {
+      "task": "AppIconAssets",
+      "details": {
+        "style": "minimal brain/leaf"
+      }
+    },
+    {
+      "task": "WidgetKit",
+      "details": {
+        "focusTimerWidget": true
+      }
+    },
+    {
+      "task": "DarkMode",
+      "details": {
+        "support": true
+      }
+    }
+  ],
+  "repo_scaffold": {
+    "folders": [
+      "DopamineDetox/Models",
+      "DopamineDetox/Views",
+      "DopamineDetox/ViewModels",
+      "DopamineDetox/Services/AI",
+      "DopamineDetox/Services/Storage",
+      "DopamineDetox/Resources/Assets.xcassets",
+      "DopamineDetox/Resources/Localization",
+      "DopamineDetox/Widgets"
+    ],
+    "files": {
+      "DopamineDetox/App.swift": "// SwiftUI App entry",
+      "DopamineDetox/Models/DetoxSession.swift": "// struct DetoxSession {...}",
+      "DopamineDetox/Views/DetoxTimerView.swift": "// SwiftUI countdown timer UI",
+      "DopamineDetox/Views/OnboardingView.swift": "// Questionnaire and score",
+      "DopamineDetox/Views/DashboardView.swift": "// Charts & streaks",
+      "DopamineDetox/Views/JournalView.swift": "// Daily entries",
+      "DopamineDetox/Views/AICoachView.swift": "// Chat style coach",
+      "DopamineDetox/ViewModels/DetoxViewModel.swift": "// Timer logic & notifications",
+      "DopamineDetox/Services/AI/FoundationCoach.swift": "// Bridge to Foundation Models",
+      "DopamineDetox/Services/Storage/CoreDataStack.swift": "// CoreData setup",
+      "DopamineDetox/Widgets/FocusTimerWidget.swift": "// WidgetKit entry"
+    }
+  },
+  "app_store_metadata": {
+    "name": "Dopamine Detox",
+    "subtitle": "Rewire your mind for calm and focus",
+    "promo_text": "Break free from overstimulation and build real focus.",
+    "description": "Dopamine Detox helps you reduce screen addiction, track your focus, and rediscover peace. Start guided detox sessions, journal reflections, view your progress, and chat with an empathetic AI coach. Local‑first privacy, gentle motivation, beautiful minimal design.",
+    "keywords": [
+      "dopamine detox",
+      "focus",
+      "habit tracker",
+      "mindfulness",
+      "digital balance",
+      "ai coach",
+      "journaling",
+      "productivity",
+      "sleep",
+      "meditation"
+    ],
+    "screenshots_plan": [
+      "01 – Detox Timer (clean countdown)",
+      "02 – Onboarding Test result (Dopamine Index)",
+      "03 – Dashboard with streaks & charts",
+      "04 – Journal with AI summary",
+      "05 – AI Coach chat",
+      "06 – Achievements & celebration"
+    ],
+    "age_rating": "4+",
+    "privacy_policy_url_placeholder": "https://yourdomain.com/privacy"
+  },
+  "test_plan": {
+    "unit_tests": [
+      "Detox timer tick & resume across background",
+      "Journal CRUD",
+      "DopamineIndex scoring function"
+    ],
+    "ui_tests": [
+      "Onboarding flow",
+      "Start/stop detox",
+      "Purchase premium & unlock AI coach"
+    ],
+    "qa_checklist": [
+      "Dark mode contrast",
+      "Local notifications deliver on time",
+      "No network required for core flows"
+    ]
+  }
+}
