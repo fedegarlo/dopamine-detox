@@ -80,6 +80,7 @@ struct DetoxTimerView: View {
                         } label: {
                             Label("Abort", systemImage: "xmark.circle")
                                 .frame(maxWidth: .infinity)
+                                .padding(.vertical)
                         }
                         .buttonStyle(.bordered)
                     } else {

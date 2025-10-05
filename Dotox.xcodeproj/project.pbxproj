@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		5AE3D9902E92B84400907AC9 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 5AE3D98F2E92B84400907AC9 /* RevenueCat */; };
+		5AE3D9922E92B84400907AC9 /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5AE3D9912E92B84400907AC9 /* RevenueCatUI */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		5AE3D9092E9261D900907AC9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +70,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AE3D9922E92B84400907AC9 /* RevenueCatUI in Frameworks */,
+				5AE3D9902E92B84400907AC9 /* RevenueCat in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +132,8 @@
 			);
 			name = Dotox;
 			packageProductDependencies = (
+				5AE3D98F2E92B84400907AC9 /* RevenueCat */,
+				5AE3D9912E92B84400907AC9 /* RevenueCatUI */,
 			);
 			productName = "Dopamine Detox";
 			productReference = 5AE3D8F72E9261D700907AC9 /* Dotox.app */;
@@ -208,6 +217,9 @@
 			);
 			mainGroup = 5AE3D8EE2E9261D700907AC9;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				5AE3D98E2E92B84400907AC9 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5AE3D8F82E9261D700907AC9 /* Products */;
 			projectDirPath = "";
@@ -636,6 +648,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5AE3D98E2E92B84400907AC9 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios-spm";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.41.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5AE3D98F2E92B84400907AC9 /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5AE3D98E2E92B84400907AC9 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCat;
+		};
+		5AE3D9912E92B84400907AC9 /* RevenueCatUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5AE3D98E2E92B84400907AC9 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCatUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5AE3D8EF2E9261D700907AC9 /* Project object */;
 }
