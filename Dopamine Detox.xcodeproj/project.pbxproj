@@ -24,18 +24,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5AE3D8F72E9261D700907AC9 /* Dotox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dotox.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5AE3D9082E9261D900907AC9 /* DotoxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DotoxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5AE3D9122E9261D900907AC9 /* DotoxUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DotoxUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5AE3D8F72E9261D700907AC9 /* Dopamine Detox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dopamine Detox.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5AE3D9082E9261D900907AC9 /* Dopamine DetoxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Dopamine DetoxTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5AE3D9122E9261D900907AC9 /* Dopamine DetoxUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Dopamine DetoxUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		5AE3D91A2E9261D900907AC9 /* Exceptions for "Dopamine Detox" folder in "Dotox" target */ = {
+		5AE3D91A2E9261D900907AC9 /* Exceptions for "Dopamine Detox" folder in "Dopamine Detox" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 5AE3D8F62E9261D700907AC9 /* Dotox */;
+			target = 5AE3D8F62E9261D700907AC9 /* Dopamine Detox */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -43,7 +43,7 @@
 		5AE3D8F92E9261D700907AC9 /* Dopamine Detox */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				5AE3D91A2E9261D900907AC9 /* Exceptions for "Dopamine Detox" folder in "Dotox" target */,
+				5AE3D91A2E9261D900907AC9 /* Exceptions for "Dopamine Detox" folder in "Dopamine Detox" target */,
 			);
 			path = "Dopamine Detox";
 			sourceTree = "<group>";
@@ -98,9 +98,9 @@
 		5AE3D8F82E9261D700907AC9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5AE3D8F72E9261D700907AC9 /* Dotox.app */,
-				5AE3D9082E9261D900907AC9 /* DotoxTests.xctest */,
-				5AE3D9122E9261D900907AC9 /* DotoxUITests.xctest */,
+				5AE3D8F72E9261D700907AC9 /* Dopamine Detox.app */,
+				5AE3D9082E9261D900907AC9 /* Dopamine DetoxTests.xctest */,
+				5AE3D9122E9261D900907AC9 /* Dopamine DetoxUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -108,9 +108,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5AE3D8F62E9261D700907AC9 /* Dotox */ = {
+		5AE3D8F62E9261D700907AC9 /* Dopamine Detox */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5AE3D91B2E9261D900907AC9 /* Build configuration list for PBXNativeTarget "Dotox" */;
+			buildConfigurationList = 5AE3D91B2E9261D900907AC9 /* Build configuration list for PBXNativeTarget "Dopamine Detox" */;
 			buildPhases = (
 				5AE3D8F32E9261D700907AC9 /* Sources */,
 				5AE3D8F42E9261D700907AC9 /* Frameworks */,
@@ -123,16 +123,16 @@
 			fileSystemSynchronizedGroups = (
 				5AE3D8F92E9261D700907AC9 /* Dopamine Detox */,
 			);
-			name = Dotox;
+			name = "Dopamine Detox";
 			packageProductDependencies = (
 			);
 			productName = "Dopamine Detox";
-			productReference = 5AE3D8F72E9261D700907AC9 /* Dotox.app */;
+			productReference = 5AE3D8F72E9261D700907AC9 /* Dopamine Detox.app */;
 			productType = "com.apple.product-type.application";
 		};
-		5AE3D9072E9261D900907AC9 /* DotoxTests */ = {
+		5AE3D9072E9261D900907AC9 /* Dopamine DetoxTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5AE3D9202E9261D900907AC9 /* Build configuration list for PBXNativeTarget "DotoxTests" */;
+			buildConfigurationList = 5AE3D9202E9261D900907AC9 /* Build configuration list for PBXNativeTarget "Dopamine DetoxTests" */;
 			buildPhases = (
 				5AE3D9042E9261D900907AC9 /* Sources */,
 				5AE3D9052E9261D900907AC9 /* Frameworks */,
@@ -146,16 +146,16 @@
 			fileSystemSynchronizedGroups = (
 				5AE3D90B2E9261D900907AC9 /* Dopamine DetoxTests */,
 			);
-			name = DotoxTests;
+			name = "Dopamine DetoxTests";
 			packageProductDependencies = (
 			);
 			productName = "Dopamine DetoxTests";
-			productReference = 5AE3D9082E9261D900907AC9 /* DotoxTests.xctest */;
+			productReference = 5AE3D9082E9261D900907AC9 /* Dopamine DetoxTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		5AE3D9112E9261D900907AC9 /* DotoxUITests */ = {
+		5AE3D9112E9261D900907AC9 /* Dopamine DetoxUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5AE3D9232E9261D900907AC9 /* Build configuration list for PBXNativeTarget "DotoxUITests" */;
+			buildConfigurationList = 5AE3D9232E9261D900907AC9 /* Build configuration list for PBXNativeTarget "Dopamine DetoxUITests" */;
 			buildPhases = (
 				5AE3D90E2E9261D900907AC9 /* Sources */,
 				5AE3D90F2E9261D900907AC9 /* Frameworks */,
@@ -169,11 +169,11 @@
 			fileSystemSynchronizedGroups = (
 				5AE3D9152E9261D900907AC9 /* Dopamine DetoxUITests */,
 			);
-			name = DotoxUITests;
+			name = "Dopamine DetoxUITests";
 			packageProductDependencies = (
 			);
 			productName = "Dopamine DetoxUITests";
-			productReference = 5AE3D9122E9261D900907AC9 /* DotoxUITests.xctest */;
+			productReference = 5AE3D9122E9261D900907AC9 /* Dopamine DetoxUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -199,7 +199,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 5AE3D8F22E9261D700907AC9 /* Build configuration list for PBXProject "Dotox" */;
+			buildConfigurationList = 5AE3D8F22E9261D700907AC9 /* Build configuration list for PBXProject "Dopamine Detox" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -213,9 +213,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5AE3D8F62E9261D700907AC9 /* Dotox */,
-				5AE3D9072E9261D900907AC9 /* DotoxTests */,
-				5AE3D9112E9261D900907AC9 /* DotoxUITests */,
+				5AE3D8F62E9261D700907AC9 /* Dopamine Detox */,
+				5AE3D9072E9261D900907AC9 /* Dopamine DetoxTests */,
+				5AE3D9112E9261D900907AC9 /* Dopamine DetoxUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -271,12 +271,12 @@
 /* Begin PBXTargetDependency section */
 		5AE3D90A2E9261D900907AC9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 5AE3D8F62E9261D700907AC9 /* Dotox */;
+			target = 5AE3D8F62E9261D700907AC9 /* Dopamine Detox */;
 			targetProxy = 5AE3D9092E9261D900907AC9 /* PBXContainerItemProxy */;
 		};
 		5AE3D9142E9261D900907AC9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 5AE3D8F62E9261D700907AC9 /* Dotox */;
+			target = 5AE3D8F62E9261D700907AC9 /* Dopamine Detox */;
 			targetProxy = 5AE3D9132E9261D900907AC9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -296,7 +296,7 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Dopamine Detox/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = Dotox;
+				INFOPLIST_KEY_CFBundleDisplayName = "Dopamine Detox";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -344,7 +344,7 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Dopamine Detox/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = Dotox;
+				INFOPLIST_KEY_CFBundleDisplayName = "Dopamine Detox";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -515,7 +515,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Dotox.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Dotox";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Dopamine\ Detox.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Dopamine\ Detox";
 				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Debug;
@@ -541,7 +541,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Dotox.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Dotox";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Dopamine\ Detox.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Dopamine\ Detox";
 				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Release;
@@ -599,7 +599,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5AE3D8F22E9261D700907AC9 /* Build configuration list for PBXProject "Dotox" */ = {
+		5AE3D8F22E9261D700907AC9 /* Build configuration list for PBXProject "Dopamine Detox" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5AE3D91E2E9261D900907AC9 /* Debug */,
@@ -608,7 +608,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5AE3D91B2E9261D900907AC9 /* Build configuration list for PBXNativeTarget "Dotox" */ = {
+		5AE3D91B2E9261D900907AC9 /* Build configuration list for PBXNativeTarget "Dopamine Detox" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5AE3D91C2E9261D900907AC9 /* Debug */,
@@ -617,7 +617,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5AE3D9202E9261D900907AC9 /* Build configuration list for PBXNativeTarget "DotoxTests" */ = {
+		5AE3D9202E9261D900907AC9 /* Build configuration list for PBXNativeTarget "Dopamine DetoxTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5AE3D9212E9261D900907AC9 /* Debug */,
@@ -626,7 +626,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5AE3D9232E9261D900907AC9 /* Build configuration list for PBXNativeTarget "DotoxUITests" */ = {
+		5AE3D9232E9261D900907AC9 /* Build configuration list for PBXNativeTarget "Dopamine DetoxUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5AE3D9242E9261D900907AC9 /* Debug */,
