@@ -134,7 +134,6 @@ struct DetoxTimerView: View {
         .animation(.default, value: viewModel.showCelebration)
         .sheet(isPresented: $showingPaywall) {
             PaywallView(displayCloseButton: true)
-                .ignoresSafeArea()
         }
         .alert(item: $paywallError) { error in
             Alert(
