@@ -58,6 +58,11 @@ struct DetoxTimerView: View {
             VStack(spacing: 16) {
                 ZStack {
                     Circle()
+                        .stroke(Color(.systemGray5), style: StrokeStyle(lineWidth: 12, lineCap: .round))
+                        .rotationEffect(.degrees(-90))
+                        .frame(width: 220, height: 220)
+
+                    Circle()
                         .trim(from: 0, to: viewModel.isRunning ? viewModel.progress : 0)
                         .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 12, lineCap: .round))
                         .rotationEffect(.degrees(-90))
@@ -77,61 +82,34 @@ struct DetoxTimerView: View {
 
                 HStack(spacing: 16) {
                     if viewModel.isRunning {
-                        if #available(iOS 15.0, *) {
-                            Button(role: .destructive) {
-                                viewModel.cancelSession()
-                            } label: {
-                                Label("Abort", systemImage: "xmark.circle")
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical)
-                            }
-                            .buttonStyle(.bordered)
-                        } else {
-                            Button {
-                                viewModel.cancelSession()
-                            } label: {
-                                Label("Abort", systemImage: "xmark.circle")
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical)
-                            }
-                            .buttonStyle(DefaultButtonStyle())
+                        Button(role: .destructive) {
+                            viewModel.cancelSession()
+                        } label: {
+                            Label("Abort", systemImage: "xmark.circle")
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 18)
                         }
+                        .buttonStyle(.bordered)
                     } else {
-                        if #available(iOS 15.0, *) {
-                            Button {
-                                handleStartTapped()
-                            } label: {
-                                if isCheckingAccess {
-                                    ProgressView()
-                                        .frame(maxWidth: .infinity)
-                                } else {
-                                    Label("Start detox", systemImage: "play.circle.fill")
-                                        .frame(maxWidth: .infinity)
-                                        .padding(.vertical)
-                                }
+                        Button {
+                            handleStartTapped()
+                        } label: {
+                            if isCheckingAccess {
+                                ProgressView()
+                                    .frame(maxWidth: .infinity)
+                            } else {
+                                Label("Start detox", systemImage: "play.circle.fill")
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 16)
                             }
-                            .buttonStyle(.borderedProminent)
-                            .controlSize(.large)
-                            .disabled(isCheckingAccess)
-                        } else {
-                            Button {
-                                handleStartTapped()
-                            } label: {
-                                if isCheckingAccess {
-                                    ProgressView()
-                                        .frame(maxWidth: .infinity)
-                                } else {
-                                    Label("Start detox", systemImage: "play.circle.fill")
-                                        .frame(maxWidth: .infinity)
-                                        .padding(.vertical)
-                                }
-                            }
-                            .buttonStyle(DefaultButtonStyle())
-                            .disabled(isCheckingAccess)
                         }
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+                        .disabled(isCheckingAccess)
                     }
                 }
                 .padding(.horizontal)
+                .padding(.top)
             }
 
             FocusAutomationCard(focusManager: focusAutomation)
@@ -367,3 +345,4 @@ private struct PaywallError: Identifiable {
     let id = UUID()
     let message: String
 }
+
