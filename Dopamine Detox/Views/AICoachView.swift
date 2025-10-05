@@ -78,7 +78,7 @@ struct AICoachView: View {
         HStack {
             if message.sender == .coach {
                 Image(systemName: "sparkles")
-                    .foregroundStyle(.accent)
+                    .foregroundStyle(Color.accentColor)
             } else {
                 Spacer(minLength: 32)
             }
