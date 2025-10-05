@@ -7,7 +7,7 @@ struct DashboardView: View {
     private struct SessionBar: Identifiable {
         let id = UUID()
         let date: Date
-        let minutes: Int
+        let hours: Double
     }
 
     private struct Milestone: Identifiable {
@@ -46,13 +46,14 @@ struct DashboardView: View {
                     Chart(sessionBars) { item in
                         BarMark(
                             x: .value("Day", item.date, unit: .day),
-                            y: .value("Minutes", item.minutes)
+                            y: .value("Hours", item.hours)
                         )
                         .cornerRadius(8)
                         .foregroundStyle(Color.accentColor.gradient)
                     }
                     .frame(height: 200)
                     .padding(.horizontal)
+                    .chartYScale(domain: yAxisDomain)
                     .chartXAxis {
                         AxisMarks(values: .stride(by: .day)) { value in
                             AxisGridLine()
@@ -111,8 +112,15 @@ struct DashboardView: View {
                     return calendar.isDate(referenceDate, inSameDayAs: day)
                 }
                 .reduce(0) { $0 + Int($1.duration.rawValue / 60) }
-            return SessionBar(date: day, minutes: totalMinutes)
+            let hours = Double(totalMinutes) / 60.0
+            return SessionBar(date: day, hours: hours)
         }
+    }
+
+    private var yAxisDomain: ClosedRange<Double> {
+        let maxHours = sessionBars.map(\.hours).max() ?? 0
+        let upperBound = max(maxHours.rounded(.up), 1)
+        return 0...upperBound
     }
 
     private var milestones: [Milestone] {
