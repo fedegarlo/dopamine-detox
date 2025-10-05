@@ -11,7 +11,7 @@ struct JournalView: View {
     var body: some View {
         NavigationStack {
             List {
-                Section("New entry") {
+                Section {
                     Picker("Prompt", selection: $viewModel.selectedPrompt) {
                         ForEach(viewModel.prompts, id: \.self) { prompt in
                             Text(prompt).tag(prompt)
@@ -35,11 +35,17 @@ struct JournalView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .disabled(viewModel.entryText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                } header: {
+                    Text("New entry")
                 }
 
-                Section("History") {
+                Section {
                     if appState.journalEntries.isEmpty {
-                        ContentUnavailableView("No entries yet", systemImage: "text.book.closed", description: Text("Capture how your mind reacts during detox sessions."))
+                        ContentUnavailableView(
+                            "No entries yet",
+                            systemImage: "text.book.closed",
+                            description: Text("Capture how your mind reacts during detox sessions.")
+                        )
                     } else {
                         ForEach(appState.journalEntries) { entry in
                             VStack(alignment: .leading, spacing: 8) {
@@ -66,6 +72,8 @@ struct JournalView: View {
                             .padding(.vertical, 8)
                         }
                     }
+                } header: {
+                    Text("History")
                 }
             }
             .navigationTitle("Journal")
