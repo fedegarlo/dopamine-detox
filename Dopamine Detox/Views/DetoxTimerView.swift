@@ -1,3 +1,4 @@
+import RevenueCat
 import RevenueCatUI
 import SwiftUI
 import UIKit
@@ -5,7 +6,7 @@ import UIKit
 struct DetoxTimerView: View {
     @StateObject private var viewModel: DetoxTimerViewModel
     @State private var isCheckingAccess = false
-    @State private var showingPaywall = false
+    @State private var paywallPresentation: PaywallPresentation?
     @State private var paywallError: PaywallError?
     @StateObject private var focusAutomation = FocusAutomationManager.shared
     @Environment(\.scenePhase) private var scenePhase
@@ -132,8 +133,8 @@ struct DetoxTimerView: View {
             }
         }
         .animation(.default, value: viewModel.showCelebration)
-        .sheet(isPresented: $showingPaywall) {
-            PaywallView(displayCloseButton: true)
+        .sheet(item: $paywallPresentation) { presentation in
+            PaywallView(offering: presentation.offering, displayCloseButton: true)
         }
         .alert(item: $paywallError) { error in
             Alert(
@@ -271,10 +272,12 @@ private extension DetoxTimerView {
                 if let message = result.errorMessage {
                     paywallError = PaywallError(message: message)
                 }
+            }
 
-                if result.requiresPaywall {
-                    showingPaywall = true
-                } else {
+            if result.requiresPaywall {
+                await presentPaywall()
+            } else {
+                await MainActor.run {
                     viewModel.startSession()
                 }
             }
@@ -285,5 +288,36 @@ private extension DetoxTimerView {
 private struct PaywallError: Identifiable {
     let id = UUID()
     let message: String
+}
+
+private extension DetoxTimerView {
+    func presentPaywall() async {
+        do {
+            let offerings = try await Purchases.shared.offerings()
+            guard let offering = offerings.current ?? offerings.all.values.first else {
+                await MainActor.run {
+                    paywallError = PaywallError(
+                        message: "No hay una oferta disponible en este momento. Inténtalo más tarde."
+                    )
+                }
+                return
+            }
+
+            await MainActor.run {
+                paywallPresentation = PaywallPresentation(offering: offering)
+            }
+        } catch {
+            await MainActor.run {
+                paywallError = PaywallError(
+                    message: "No pudimos cargar la suscripción en este momento. Vuelve a intentarlo más tarde."
+                )
+            }
+        }
+    }
+}
+
+private struct PaywallPresentation: Identifiable {
+    let id = UUID()
+    let offering: Offering
 }
 
