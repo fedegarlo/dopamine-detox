@@ -127,26 +127,8 @@ struct DetoxTimerView: View {
         }
         .overlay {
             if viewModel.showCelebration {
-                ZStack {
-                    Color(.systemBackground)
-                        .opacity(0.9)
-                        .ignoresSafeArea()
-                    VStack(spacing: 16) {
-                        Image(systemName: "star.circle.fill")
-                            .font(.system(size: 60))
-                            .foregroundStyle(Color("AccentColor"))
-                            .symbolEffect(.bounce)
-                        Text("Session completed!")
-                            .font(.title2.bold())
-                        Text("Great job staying focused")
-                            .foregroundStyle(.secondary)
-                    }
-                    .onAppear {
-                        let generator = UINotificationFeedbackGenerator()
-                        generator.notificationOccurred(.success)
-                    }
-                }
-                .transition(.opacity)
+                CelebrationOverlay(viewModel: viewModel)
+                    .transition(.opacity)
             }
         }
         .animation(.default, value: viewModel.showCelebration)
@@ -189,6 +171,86 @@ private struct CelebrationBanner: View {
         .background(.thinMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .shadow(radius: 10)
+    }
+}
+
+private struct CelebrationOverlay: View {
+    @ObservedObject var viewModel: DetoxTimerViewModel
+
+    var body: some View {
+        ZStack {
+            Color(.systemBackground)
+                .opacity(0.9)
+                .ignoresSafeArea()
+
+            VStack {
+                Spacer()
+
+                VStack(spacing: 24) {
+                    Image(systemName: "star.circle.fill")
+                        .font(.system(size: 64))
+                        .foregroundStyle(Color("AccentColor"))
+                        .symbolEffect(.bounce)
+
+                    VStack(spacing: 8) {
+                        Text("¡Sesión completada!")
+                            .font(.title2.bold())
+                            .multilineTextAlignment(.center)
+                        Text("Tu progreso se ha actualizado correctamente.")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                    }
+
+                    VStack(spacing: 12) {
+                        CelebrationMetricRow(icon: "flame.fill", text: viewModel.currentStreakDescription)
+                        CelebrationMetricRow(icon: "hourglass", text: viewModel.totalFocusDescription)
+                        CelebrationMetricRow(icon: "checkmark.circle", text: viewModel.completedSessionsDescription)
+                    }
+
+                    Button {
+                        viewModel.dismissCelebration()
+                    } label: {
+                        Text("Ver mi progreso")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+                .padding(24)
+                .frame(maxWidth: 360)
+                .background(Color(.secondarySystemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+                .shadow(radius: 16)
+                .padding(.horizontal)
+                .onAppear {
+                    let generator = UINotificationFeedbackGenerator()
+                    generator.notificationOccurred(.success)
+                }
+
+                Spacer()
+            }
+        }
+    }
+}
+
+private struct CelebrationMetricRow: View {
+    let icon: String
+    let text: String
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .foregroundStyle(Color("AccentColor"))
+            Text(text)
+                .font(.subheadline)
+                .fontWeight(.medium)
+                .multilineTextAlignment(.leading)
+            Spacer()
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color(.tertiarySystemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 }
 
