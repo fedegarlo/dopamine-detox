@@ -17,7 +17,7 @@ final class OnboardingViewModel: ObservableObject {
 
     init() {
         let baseWeight = 1.0 / 8.0
-        questions = [
+        let qs: [OnboardingQuestion] = [
             OnboardingQuestion(prompt: "How often do you lose track of time scrolling?", helpText: "High frequency indicates overstimulation.", weight: baseWeight),
             OnboardingQuestion(prompt: "Do you check your phone within 5 minutes of waking?", helpText: "Morning habits set the tone for the day.", weight: baseWeight),
             OnboardingQuestion(prompt: "How restless do you feel when away from screens?", helpText: "Restlessness = higher dopamine load.", weight: baseWeight),
@@ -27,8 +27,10 @@ final class OnboardingViewModel: ObservableObject {
             OnboardingQuestion(prompt: "How difficult is it to start a focused task?", helpText: "Difficulty starting hints at overload.", weight: baseWeight),
             OnboardingQuestion(prompt: "How satisfied are you with your current balance?", helpText: "Satisfaction correlates with lower stimulation.", weight: baseWeight)
         ]
-        responseScores = Dictionary(uniqueKeysWithValues: questions.map { ($0.id, 2) })
-        answeredQuestions = []
+
+        self.questions = qs
+        self.responseScores = Dictionary(uniqueKeysWithValues: qs.map { ($0.id, 2) })
+        self.answeredQuestions = []
     }
 
     var progress: Double {
@@ -47,3 +49,4 @@ final class OnboardingViewModel: ObservableObject {
         return Int((weightedScore / totalWeight) * 100)
     }
 }
+

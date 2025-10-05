@@ -19,8 +19,9 @@ final class DetoxTimerViewModel: ObservableObject {
             remainingTime = max(remaining, 0)
             isRunning = remaining > 0
         } else {
-            selectedDuration = .oneHour
-            remainingTime = selectedDuration.rawValue
+            let defaultDuration: DetoxDuration = .oneHour
+            selectedDuration = defaultDuration
+            remainingTime = defaultDuration.rawValue
             isRunning = false
         }
     }

@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct DetoxTimerView: View {
     @StateObject private var viewModel: DetoxTimerViewModel
@@ -44,6 +45,7 @@ struct DetoxTimerView: View {
                         }
                     }
                     .padding(.horizontal)
+                    .padding(.vertical)
                 }
             }
 
@@ -113,6 +115,31 @@ struct DetoxTimerView: View {
                     .padding()
             }
         }
+        .overlay {
+            if viewModel.showCelebration {
+                ZStack {
+                    Color(.systemBackground)
+                        .opacity(0.9)
+                        .ignoresSafeArea()
+                    VStack(spacing: 16) {
+                        Image(systemName: "star.circle.fill")
+                            .font(.system(size: 60))
+                            .foregroundStyle(Color("AccentColor"))
+                            .symbolEffect(.bounce)
+                        Text("Session completed!")
+                            .font(.title2.bold())
+                        Text("Great job staying focused")
+                            .foregroundStyle(.secondary)
+                    }
+                    .onAppear {
+                        let generator = UINotificationFeedbackGenerator()
+                        generator.notificationOccurred(.success)
+                    }
+                }
+                .transition(.opacity)
+            }
+        }
+        .animation(.default, value: viewModel.showCelebration)
     }
 }
 

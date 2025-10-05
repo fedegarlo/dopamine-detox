@@ -47,7 +47,7 @@ struct JournalView: View {
                             description: Text("Capture how your mind reacts during detox sessions.")
                         )
                     } else {
-                        ForEach(appState.journalEntries) { entry in
+                        ForEach(Array(appState.journalEntries.enumerated()), id: \.element.id) { _, entry in
                             VStack(alignment: .leading, spacing: 8) {
                                 HStack {
                                     Text(entry.prompt)
@@ -62,7 +62,7 @@ struct JournalView: View {
                                 if let summary = entry.aiSummary {
                                     HStack(alignment: .top, spacing: 8) {
                                         Image(systemName: "sparkles")
-                                            .foregroundStyle(.accent)
+                                            .foregroundStyle(Color("AccentColor"))
                                         Text(summary)
                                             .font(.footnote)
                                             .foregroundStyle(.secondary)

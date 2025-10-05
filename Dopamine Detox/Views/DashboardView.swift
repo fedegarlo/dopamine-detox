@@ -70,7 +70,7 @@ struct DashboardView: View {
                     ForEach(milestones) { milestone in
                         HStack {
                             Image(systemName: milestone.icon)
-                                .foregroundStyle(milestone.reached ? .accent : .secondary)
+                                .foregroundStyle(milestone.reached ? Color("AccentColor") : .secondary)
                             VStack(alignment: .leading) {
                                 Text(milestone.title)
                                     .fontWeight(.medium)
