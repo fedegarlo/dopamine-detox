@@ -14,7 +14,7 @@ struct JournalView: View {
                 Section {
                     Picker("Prompt", selection: $viewModel.selectedPrompt) {
                         ForEach(viewModel.prompts, id: \.self) { prompt in
-                            Text(prompt).tag(prompt)
+                            Text(prompt).tag(prompt as String)
                         }
                     }
 
@@ -47,7 +47,7 @@ struct JournalView: View {
                             description: Text("Capture how your mind reacts during detox sessions.")
                         )
                     } else {
-                        ForEach(appState.journalEntries) { entry in
+                        ForEach(appState.journalEntries, id: \.id) { entry in
                             VStack(alignment: .leading, spacing: 8) {
                                 HStack {
                                     Text(entry.prompt)
