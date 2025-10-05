@@ -1,6 +1,6 @@
 {
   "fill" : {
-    "automatic-gradient" : "srgb:0.38560,0.17994,0.48837,1.00000"
+    "automatic-gradient" : "srgb:0.56378,0.26308,0.71404,1.00000"
   },
   "groups" : [
     {
@@ -38,7 +38,7 @@
           "position" : {
             "scale" : 0.22,
             "translation-in-points" : [
-              -0.3671875,
+              0,
               37.7
             ]
           }
@@ -93,7 +93,7 @@
       "specular" : true,
       "translucency" : {
         "enabled" : true,
-        "value" : 0.28
+        "value" : 0
       }
     }
   ],
