@@ -20,6 +20,7 @@ final class AppState: ObservableObject {
         case totalFocusMinutes
         case completedSessions
         case activeSession
+        case pastSessions
     }
 
     init(userDefaults: UserDefaults = .standard) {
@@ -34,10 +35,16 @@ final class AppState: ObservableObject {
         streak = storedStreak
         totalFocusMinutes = storedMinutes
         activeSession = nil
-        pastSessions = []
+        if let storedSessionsData = defaults.data(forKey: StorageKeys.pastSessions.rawValue),
+           let storedSessions = try? JSONDecoder().decode([DetoxSession].self, from: storedSessionsData) {
+            pastSessions = storedSessions
+        } else {
+            pastSessions = []
+        }
         completedSessionCount = defaults.object(forKey: StorageKeys.completedSessions.rawValue) as? Int ?? 0
         journalEntries = JournalEntry.sampleData
         achievements = Achievement.defaults()
+        updateAchievements()
 
         // Restore persisted active session if any
         if let data = defaults.data(forKey: StorageKeys.activeSession.rawValue),
@@ -79,6 +86,7 @@ final class AppState: ObservableObject {
 
         if aborted {
             streak = 0
+            userDefaults.set(streak, forKey: StorageKeys.streak.rawValue)
         } else {
             streak += 1
             totalFocusMinutes += Int(session.duration.rawValue / 60)
@@ -88,11 +96,17 @@ final class AppState: ObservableObject {
             userDefaults.set(completedSessionCount, forKey: StorageKeys.completedSessions.rawValue)
         }
 
+        persistPastSessions(using: userDefaults)
         updateAchievements()
     }
 
     func addJournalEntry(_ entry: JournalEntry) {
         journalEntries.insert(entry, at: 0)
+    }
+
+    private func persistPastSessions(using userDefaults: UserDefaults) {
+        guard let data = try? JSONEncoder().encode(pastSessions) else { return }
+        userDefaults.set(data, forKey: StorageKeys.pastSessions.rawValue)
     }
 
     private func updateAchievements() {

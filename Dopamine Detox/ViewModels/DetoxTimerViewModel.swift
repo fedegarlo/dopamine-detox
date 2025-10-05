@@ -49,6 +49,29 @@ final class DetoxTimerViewModel: ObservableObject {
         return 1 - (remainingTime / duration)
     }
 
+    var currentStreakDescription: String {
+        let days = appState.streak
+        let suffix = days == 1 ? "día" : "días"
+        return "\(days) \(suffix) de racha"
+    }
+
+    var totalFocusDescription: String {
+        let minutes = appState.totalFocusMinutes
+        if minutes >= 60 {
+            let hours = minutes / 60
+            let suffix = hours == 1 ? "hora" : "horas"
+            return "\(hours) \(suffix) enfocadas"
+        } else {
+            return "\(minutes) min enfocados"
+        }
+    }
+
+    var completedSessionsDescription: String {
+        let sessions = appState.completedSessionCount
+        let suffix = sessions == 1 ? "sesión completada" : "sesiones completadas"
+        return "\(sessions) \(suffix)"
+    }
+
     func startSession() {
         let session = DetoxSession(startedAt: Date(), duration: selectedDuration)
         appState.updateActiveSession(session)
@@ -57,6 +80,10 @@ final class DetoxTimerViewModel: ObservableObject {
         showCelebration = false
         startTimer()
         focusAutomationManager.beginDetoxSession()
+    }
+
+    func dismissCelebration() {
+        showCelebration = false
     }
 
     func requiresPaywallBeforeStartingSession() async -> (requiresPaywall: Bool, errorMessage: String?) {
