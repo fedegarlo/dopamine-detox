@@ -19,6 +19,7 @@ final class AppState: ObservableObject {
         case streak
         case totalFocusMinutes
         case completedSessions
+        case activeSession
     }
 
     init(userDefaults: UserDefaults = .standard) {
@@ -37,6 +38,19 @@ final class AppState: ObservableObject {
         completedSessionCount = defaults.object(forKey: StorageKeys.completedSessions.rawValue) as? Int ?? 0
         journalEntries = JournalEntry.sampleData
         achievements = Achievement.defaults()
+
+        // Restore persisted active session if any
+        if let data = defaults.data(forKey: StorageKeys.activeSession.rawValue),
+           let session = try? JSONDecoder().decode(DetoxSession.self, from: data) {
+            if session.endsAt > Date() {
+                activeSession = session
+            } else {
+                // Session finished while app was closed; count it as completed
+                activeSession = nil
+                recordSessionCompletion(session, aborted: false, userDefaults: defaults)
+                defaults.removeObject(forKey: StorageKeys.activeSession.rawValue)
+            }
+        }
     }
 
     func markOnboardingComplete(score: Int, userDefaults: UserDefaults = .standard) {
@@ -46,8 +60,15 @@ final class AppState: ObservableObject {
         userDefaults.set(true, forKey: StorageKeys.onboardingCompleted.rawValue)
     }
 
-    func updateActiveSession(_ session: DetoxSession?) {
+    func updateActiveSession(_ session: DetoxSession?, userDefaults: UserDefaults = .standard) {
         activeSession = session
+        if let session {
+            if let data = try? JSONEncoder().encode(session) {
+                userDefaults.set(data, forKey: StorageKeys.activeSession.rawValue)
+            }
+        } else {
+            userDefaults.removeObject(forKey: StorageKeys.activeSession.rawValue)
+        }
     }
 
     func recordSessionCompletion(_ session: DetoxSession, aborted: Bool, userDefaults: UserDefaults = .standard) {

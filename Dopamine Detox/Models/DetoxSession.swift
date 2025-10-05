@@ -1,6 +1,6 @@
 import Foundation
 
-enum DetoxDuration: TimeInterval, CaseIterable, Identifiable {
+enum DetoxDuration: TimeInterval, CaseIterable, Identifiable, Codable {
     case oneHour = 3_600
     case threeHours = 10_800
     case oneDay = 86_400
@@ -30,7 +30,7 @@ enum DetoxDuration: TimeInterval, CaseIterable, Identifiable {
     }
 }
 
-struct DetoxSession: Identifiable {
+struct DetoxSession: Identifiable, Codable {
     let id = UUID()
     let startedAt: Date
     let duration: DetoxDuration

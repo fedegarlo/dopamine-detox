@@ -21,6 +21,12 @@ final class DetoxTimerViewModel: ObservableObject {
             let remaining = active.endsAt.timeIntervalSinceNow
             remainingTime = max(remaining, 0)
             isRunning = remaining > 0
+            
+            // Resume timer and Focus if session is still active
+            if isRunning {
+                startTimer()
+                focusAutomationManager.beginDetoxSession()
+            }
         } else {
             let defaultDuration: DetoxDuration = .oneHour
             selectedDuration = defaultDuration
@@ -91,11 +97,19 @@ final class DetoxTimerViewModel: ObservableObject {
     }
 
     private func tick() {
-        guard remainingTime > 1 else {
-            finishSession()
+        guard let session = appState.activeSession else {
+            stopTimer()
+            isRunning = false
             return
         }
-        remainingTime -= 1
+
+        let remaining = session.endsAt.timeIntervalSinceNow
+        if remaining <= 0 {
+            remainingTime = 0
+            finishSession()
+        } else {
+            remainingTime = remaining
+        }
     }
 
     private func finishSession() {
