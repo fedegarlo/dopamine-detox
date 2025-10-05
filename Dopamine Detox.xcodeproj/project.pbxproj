@@ -4,7 +4,12 @@
 	classes = {
 	};
 	objectVersion = 77;
-	objects = {
+        objects = {
+
+/* Begin PBXBuildFile section */
+                B6F1AA1C2FB23FBC00D12345 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = B6F1AA222FB23FBC00D12345 /* RevenueCat */; };
+                B6F1AA1D2FB23FBC00D12345 /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = B6F1AA232FB23FBC00D12345 /* RevenueCatUI */; };
+/* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		5AE3D9092E9261D900907AC9 /* PBXContainerItemProxy */ = {
@@ -61,13 +66,15 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		5AE3D8F42E9261D700907AC9 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
+                5AE3D8F42E9261D700907AC9 /* Frameworks */ = {
+                        isa = PBXFrameworksBuildPhase;
+                        buildActionMask = 2147483647;
+                        files = (
+                                B6F1AA1C2FB23FBC00D12345 /* RevenueCat in Frameworks */,
+                                B6F1AA1D2FB23FBC00D12345 /* RevenueCatUI in Frameworks */,
+                        );
+                        runOnlyForDeploymentPostprocessing = 0;
+                };
 		5AE3D9052E9261D900907AC9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,8 +131,10 @@
 				5AE3D8F92E9261D700907AC9 /* Dopamine Detox */,
 			);
 			name = "Dopamine Detox";
-			packageProductDependencies = (
-			);
+                        packageProductDependencies = (
+                                B6F1AA222FB23FBC00D12345 /* RevenueCat */,
+                                B6F1AA232FB23FBC00D12345 /* RevenueCatUI */,
+                        );
 			productName = "Dopamine Detox";
 			productReference = 5AE3D8F72E9261D700907AC9 /* Dopamine Detox.app */;
 			productType = "com.apple.product-type.application";
@@ -210,14 +219,17 @@
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5AE3D8F82E9261D700907AC9 /* Products */;
-			projectDirPath = "";
-			projectRoot = "";
-			targets = (
-				5AE3D8F62E9261D700907AC9 /* Dopamine Detox */,
-				5AE3D9072E9261D900907AC9 /* Dopamine DetoxTests */,
-				5AE3D9112E9261D900907AC9 /* Dopamine DetoxUITests */,
-			);
-		};
+                        projectDirPath = "";
+                        projectRoot = "";
+                        targets = (
+                                5AE3D8F62E9261D700907AC9 /* Dopamine Detox */,
+                                5AE3D9072E9261D900907AC9 /* Dopamine DetoxTests */,
+                                5AE3D9112E9261D900907AC9 /* Dopamine DetoxUITests */,
+                        );
+                        packageReferences = (
+                                B6F1AA242FB23FBC00D12345 /* XCRemoteSwiftPackageReference "purchases-ios" */,
+                        );
+                };
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -280,6 +292,17 @@
 			targetProxy = 5AE3D9132E9261D900907AC9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+                B6F1AA242FB23FBC00D12345 /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
+                        isa = XCRemoteSwiftPackageReference;
+                        repositoryURL = "https://github.com/RevenueCat/purchases-ios";
+                        requirement = {
+                                kind = upToNextMajorVersion;
+                                minimumVersion = 4.38.0;
+                        };
+                };
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCBuildConfiguration section */
 		5AE3D91C2E9261D900907AC9 /* Debug */ = {
@@ -595,8 +618,21 @@
 				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Release;
-		};
+                };
 /* End XCBuildConfiguration section */
+
+/* Begin XCSwiftPackageProductDependency section */
+                B6F1AA222FB23FBC00D12345 /* RevenueCat */ = {
+                        isa = XCSwiftPackageProductDependency;
+                        package = B6F1AA242FB23FBC00D12345 /* XCRemoteSwiftPackageReference "purchases-ios" */;
+                        productName = RevenueCat;
+                };
+                B6F1AA232FB23FBC00D12345 /* RevenueCatUI */ = {
+                        isa = XCSwiftPackageProductDependency;
+                        package = B6F1AA242FB23FBC00D12345 /* XCRemoteSwiftPackageReference "purchases-ios" */;
+                        productName = RevenueCatUI;
+                };
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCConfigurationList section */
 		5AE3D8F22E9261D700907AC9 /* Build configuration list for PBXProject "Dopamine Detox" */ = {

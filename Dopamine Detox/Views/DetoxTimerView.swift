@@ -1,8 +1,12 @@
+import RevenueCatUI
 import SwiftUI
 import UIKit
 
 struct DetoxTimerView: View {
     @StateObject private var viewModel: DetoxTimerViewModel
+    @State private var isCheckingAccess = false
+    @State private var showingPaywall = false
+    @State private var paywallError: PaywallError?
 
     init(appState: AppState) {
         _viewModel = StateObject(wrappedValue: DetoxTimerViewModel(appState: appState))
@@ -80,13 +84,19 @@ struct DetoxTimerView: View {
                         .buttonStyle(.bordered)
                     } else {
                         Button {
-                            viewModel.startSession()
+                            handleStartTapped()
                         } label: {
-                            Label("Start detox", systemImage: "play.circle.fill")
-                                .frame(maxWidth: .infinity)
+                            if isCheckingAccess {
+                                ProgressView()
+                                    .frame(maxWidth: .infinity)
+                            } else {
+                                Label("Start detox", systemImage: "play.circle.fill")
+                                    .frame(maxWidth: .infinity)
+                            }
                         }
                         .buttonStyle(.borderedProminent)
                         .controlSize(.large)
+                        .disabled(isCheckingAccess)
                     }
                 }
                 .padding(.horizontal)
@@ -140,6 +150,17 @@ struct DetoxTimerView: View {
             }
         }
         .animation(.default, value: viewModel.showCelebration)
+        .sheet(isPresented: $showingPaywall) {
+            PaywallView(displayCloseButton: true)
+                .ignoresSafeArea()
+        }
+        .alert(item: $paywallError) { error in
+            Alert(
+                title: Text("No se pudo comprobar la suscripción"),
+                message: Text(error.message),
+                dismissButton: .default(Text("Entendido"))
+            )
+        }
     }
 }
 
@@ -167,4 +188,34 @@ private struct CelebrationBanner: View {
 
 #Preview {
     DetoxTimerView(appState: AppState())
+}
+
+private extension DetoxTimerView {
+    func handleStartTapped() {
+        guard !isCheckingAccess else { return }
+        isCheckingAccess = true
+
+        Task {
+            let result = await viewModel.requiresPaywallBeforeStartingSession()
+
+            await MainActor.run {
+                isCheckingAccess = false
+
+                if let message = result.errorMessage {
+                    paywallError = PaywallError(message: message)
+                }
+
+                if result.requiresPaywall {
+                    showingPaywall = true
+                } else {
+                    viewModel.startSession()
+                }
+            }
+        }
+    }
+}
+
+private struct PaywallError: Identifiable {
+    let id = UUID()
+    let message: String
 }

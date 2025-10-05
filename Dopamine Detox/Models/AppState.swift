@@ -9,6 +9,7 @@ final class AppState: ObservableObject {
     @Published var totalFocusMinutes: Int
     @Published var activeSession: DetoxSession?
     @Published var pastSessions: [DetoxSession]
+    @Published var completedSessionCount: Int
     @Published var journalEntries: [JournalEntry]
     @Published var achievements: [Achievement]
 
@@ -17,6 +18,7 @@ final class AppState: ObservableObject {
         case onboardingCompleted
         case streak
         case totalFocusMinutes
+        case completedSessions
     }
 
     init(userDefaults: UserDefaults = .standard) {
@@ -32,6 +34,7 @@ final class AppState: ObservableObject {
         totalFocusMinutes = storedMinutes
         activeSession = nil
         pastSessions = []
+        completedSessionCount = defaults.object(forKey: StorageKeys.completedSessions.rawValue) as? Int ?? 0
         journalEntries = JournalEntry.sampleData
         achievements = Achievement.defaults()
     }
@@ -58,8 +61,10 @@ final class AppState: ObservableObject {
         } else {
             streak += 1
             totalFocusMinutes += Int(session.duration.rawValue / 60)
+            completedSessionCount += 1
             userDefaults.set(streak, forKey: StorageKeys.streak.rawValue)
             userDefaults.set(totalFocusMinutes, forKey: StorageKeys.totalFocusMinutes.rawValue)
+            userDefaults.set(completedSessionCount, forKey: StorageKeys.completedSessions.rawValue)
         }
 
         updateAchievements()
