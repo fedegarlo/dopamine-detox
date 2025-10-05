@@ -105,7 +105,11 @@ struct DashboardView: View {
 
         return pastSevenDays.map { day in
             let totalMinutes = appState.pastSessions
-                .filter { calendar.isDate($0.startedAt, inSameDayAs: day) && !$0.aborted }
+                .filter { session in
+                    guard !session.aborted else { return false }
+                    let referenceDate = session.completedAt ?? session.startedAt
+                    return calendar.isDate(referenceDate, inSameDayAs: day)
+                }
                 .reduce(0) { $0 + Int($1.duration.rawValue / 60) }
             return SessionBar(date: day, minutes: totalMinutes)
         }
