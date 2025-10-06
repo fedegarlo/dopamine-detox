@@ -293,6 +293,7 @@ private struct PaywallError: Identifiable {
 private extension DetoxTimerView {
     func presentPaywall() async {
         do {
+            // RevenueCat handles caching internally; offerings() will fetch if needed.
             let offerings = try await Purchases.shared.offerings()
             guard let offering = offerings.current ?? offerings.all.values.first else {
                 await MainActor.run {
@@ -320,4 +321,3 @@ private struct PaywallPresentation: Identifiable {
     let id = UUID()
     let offering: Offering
 }
-
