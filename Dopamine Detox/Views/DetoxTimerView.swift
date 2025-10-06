@@ -284,9 +284,12 @@ private extension DetoxTimerView {
             paywallLogger.info(
                 "requiresPaywallBeforeStartingSession returned requiresPaywall=\(result.requiresPaywall, privacy: .public) error=\(result.errorMessage ?? \"nil\", privacy: .public)"
             )
+            let requiresPaywallText = result.requiresPaywall ? "sí" : "no"
+            let errorText = result.errorMessage ?? "ninguno"
+
             showPaywallLog(
                 level: .info,
-                message: "Resultado de la comprobación: requierePaywall=\(result.requiresPaywall ? \"sí\" : \"no\") error=\(result.errorMessage ?? \"ninguno\")"
+                message: "Resultado de la comprobación: requierePaywall=\(requiresPaywallText) error=\(errorText)"
             )
 
             await MainActor.run {
