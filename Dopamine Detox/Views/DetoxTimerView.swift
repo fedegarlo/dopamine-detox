@@ -280,10 +280,6 @@ private extension DetoxTimerView {
             showPaywallLog(level: .info, message: "Comprobando requisitos de acceso antes de iniciar la sesión")
 
             let result = await viewModel.requiresPaywallBeforeStartingSession()
-
-            paywallLogger.info(
-                "requiresPaywallBeforeStartingSession returned requiresPaywall=\(result.requiresPaywall, privacy: .public) error=\(result.errorMessage ?? \"nil\", privacy: .public)"
-            )
             let requiresPaywallText = result.requiresPaywall ? "sí" : "no"
             let errorText = result.errorMessage ?? "ninguno"
 
@@ -332,10 +328,6 @@ private extension DetoxTimerView {
 
             paywallLogger.info(
                 "Offerings fetched. Current=\(currentIdentifier, privacy: .public) available=[\(availableIdentifiers, privacy: .public)]"
-            )
-            await appendPaywallLog(
-                level: .info,
-                message: "Ofertas recibidas. Actual=\(currentIdentifier) disponibles=[\(availableIdentifiers.isEmpty ? \"ninguna\" : availableIdentifiers)]"
             )
             guard let offering = offerings.current ?? offerings.all.values.first else {
                 paywallLogger.warning("No offering available when attempting to present paywall")
