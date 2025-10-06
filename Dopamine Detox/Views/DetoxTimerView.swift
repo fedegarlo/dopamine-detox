@@ -1,3 +1,4 @@
+import OSLog
 import RevenueCat
 import RevenueCatUI
 import SwiftUI
@@ -8,6 +9,8 @@ struct DetoxTimerView: View {
     @State private var isCheckingAccess = false
     @State private var paywallPresentation: PaywallPresentation?
     @State private var paywallError: PaywallError?
+    @State private var paywallLogs: [PaywallLogEntry] = []
+    @State private var isPaywallLogExpanded = true
     @StateObject private var focusAutomation = FocusAutomationManager.shared
     @Environment(\.scenePhase) private var scenePhase
 
@@ -116,6 +119,11 @@ struct DetoxTimerView: View {
             FocusAutomationCard(focusManager: focusAutomation)
                 .padding(.horizontal)
 
+            if !paywallLogs.isEmpty {
+                PaywallLogPanel(entries: paywallLogs, isExpanded: $isPaywallLogExpanded)
+                    .padding(.horizontal)
+            }
+
             Spacer()
         }
         .padding(.top, 24)
@@ -135,6 +143,10 @@ struct DetoxTimerView: View {
         .animation(.default, value: viewModel.showCelebration)
         .sheet(item: $paywallPresentation) { presentation in
             PaywallView(offering: presentation.offering, displayCloseButton: true)
+                .onAppear {
+                    paywallLogger.info("PaywallView appeared with offering \(presentation.offering.identifier, privacy: .public)")
+                    showPaywallLog(level: .info, message: "Paywall mostrado con la oferta \(presentation.offering.identifier)")
+                }
         }
         .alert(item: $paywallError) { error in
             Alert(
@@ -264,13 +276,26 @@ private extension DetoxTimerView {
         isCheckingAccess = true
 
         Task {
+            paywallLogger.info("Checking paywall requirements before starting session")
+            showPaywallLog(level: .info, message: "Comprobando requisitos de acceso antes de iniciar la sesión")
+
             let result = await viewModel.requiresPaywallBeforeStartingSession()
+
+            paywallLogger.info(
+                "requiresPaywallBeforeStartingSession returned requiresPaywall=\(result.requiresPaywall, privacy: .public) error=\(result.errorMessage ?? \"nil\", privacy: .public)"
+            )
+            showPaywallLog(
+                level: .info,
+                message: "Resultado de la comprobación: requierePaywall=\(result.requiresPaywall ? \"sí\" : \"no\") error=\(result.errorMessage ?? \"ninguno\")"
+            )
 
             await MainActor.run {
                 isCheckingAccess = false
 
                 if let message = result.errorMessage {
+                    paywallLogger.error("Paywall requirement check produced error message: \(message, privacy: .public)")
                     paywallError = PaywallError(message: message)
+                    appendPaywallLog(level: .error, message: "Error al comprobar el acceso: \(message)")
                 }
             }
 
@@ -279,6 +304,7 @@ private extension DetoxTimerView {
             } else {
                 await MainActor.run {
                     viewModel.startSession()
+                    appendPaywallLog(level: .success, message: "No se requiere paywall. Iniciando la sesión de detox")
                 }
             }
         }
@@ -293,24 +319,49 @@ private struct PaywallError: Identifiable {
 private extension DetoxTimerView {
     func presentPaywall() async {
         do {
+            paywallLogger.info("Attempting to present paywall by fetching offerings")
+            await appendPaywallLog(level: .info, message: "Buscando ofertas disponibles en RevenueCat…")
+
             // RevenueCat handles caching internally; offerings() will fetch if needed.
             let offerings = try await Purchases.shared.offerings()
+            let currentIdentifier = offerings.current?.identifier ?? "nil"
+            let availableIdentifiers = offerings.all.values.map { $0.identifier }.joined(separator: ", ")
+
+            paywallLogger.info(
+                "Offerings fetched. Current=\(currentIdentifier, privacy: .public) available=[\(availableIdentifiers, privacy: .public)]"
+            )
+            await appendPaywallLog(
+                level: .info,
+                message: "Ofertas recibidas. Actual=\(currentIdentifier) disponibles=[\(availableIdentifiers.isEmpty ? \"ninguna\" : availableIdentifiers)]"
+            )
             guard let offering = offerings.current ?? offerings.all.values.first else {
+                paywallLogger.warning("No offering available when attempting to present paywall")
                 await MainActor.run {
                     paywallError = PaywallError(
                         message: "No hay una oferta disponible en este momento. Inténtalo más tarde."
+                    )
+                    appendPaywallLog(
+                        level: .warning,
+                        message: "RevenueCat no devolvió ninguna oferta para mostrar"
                     )
                 }
                 return
             }
 
             await MainActor.run {
+                paywallLogger.info("Presenting paywall with offering \(offering.identifier, privacy: .public)")
                 paywallPresentation = PaywallPresentation(offering: offering)
+                appendPaywallLog(level: .success, message: "Mostrando la oferta \(offering.identifier)")
             }
         } catch {
+            paywallLogger.error("Failed to load offerings: \(error.localizedDescription, privacy: .public)")
             await MainActor.run {
                 paywallError = PaywallError(
                     message: "No pudimos cargar la suscripción en este momento. Vuelve a intentarlo más tarde."
+                )
+                appendPaywallLog(
+                    level: .error,
+                    message: "Error al cargar las ofertas: \(error.localizedDescription)"
                 )
             }
         }
@@ -320,4 +371,124 @@ private extension DetoxTimerView {
 private struct PaywallPresentation: Identifiable {
     let id = UUID()
     let offering: Offering
+}
+
+private let paywallLogger = Logger(subsystem: "com.dopamine-detox.app", category: "Paywall")
+
+private enum PaywallLogLevel {
+    case info
+    case success
+    case warning
+    case error
+
+    var icon: String {
+        switch self {
+        case .info:
+            return "info.circle"
+        case .success:
+            return "checkmark.circle"
+        case .warning:
+            return "exclamationmark.triangle"
+        case .error:
+            return "xmark.octagon"
+        }
+    }
+
+    var tint: Color {
+        switch self {
+        case .info:
+            return .blue
+        case .success:
+            return .green
+        case .warning:
+            return .orange
+        case .error:
+            return .red
+        }
+    }
+}
+
+private struct PaywallLogEntry: Identifiable {
+    let id = UUID()
+    let timestamp = Date()
+    let level: PaywallLogLevel
+    let message: String
+}
+
+private struct PaywallLogPanel: View {
+    let entries: [PaywallLogEntry]
+    @Binding var isExpanded: Bool
+
+    private static let timeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .none
+        formatter.timeStyle = .medium
+        return formatter
+    }()
+
+    var body: some View {
+        DisclosureGroup(isExpanded: $isExpanded) {
+            ScrollViewReader { proxy in
+                ScrollView {
+                    LazyVStack(alignment: .leading, spacing: 8) {
+                        ForEach(entries) { entry in
+                            HStack(alignment: .top, spacing: 12) {
+                                Image(systemName: entry.level.icon)
+                                    .foregroundStyle(entry.level.tint)
+                                    .font(.title3)
+
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(Self.timeFormatter.string(from: entry.timestamp))
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                    Text(entry.message)
+                                        .font(.footnote.monospaced())
+                                        .foregroundStyle(.primary)
+                                }
+                                Spacer(minLength: 0)
+                            }
+                            .padding(12)
+                            .background(Color(.secondarySystemBackground))
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                            .id(entry.id)
+                        }
+                    }
+                    .padding(.vertical, 8)
+                }
+                .frame(maxHeight: 220)
+                .onChange(of: entries.count) { _ in
+                    if let id = entries.last?.id {
+                        withAnimation {
+                            proxy.scrollTo(id, anchor: .bottom)
+                        }
+                    }
+                }
+            }
+        } label: {
+            Label("Registro de Paywall", systemImage: "doc.text.magnifyingglass")
+                .font(.subheadline.weight(.semibold))
+        }
+        .padding()
+        .background(.ultraThinMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .animation(.default, value: entries.count)
+    }
+}
+
+private extension DetoxTimerView {
+    func showPaywallLog(level: PaywallLogLevel, message: String) {
+        Task { @MainActor in
+            appendPaywallLog(level: level, message: message)
+        }
+    }
+
+    @MainActor
+    func appendPaywallLog(level: PaywallLogLevel, message: String) {
+        let maxEntries = 50
+        if paywallLogs.count >= maxEntries {
+            paywallLogs.removeFirst(paywallLogs.count - maxEntries + 1)
+        }
+
+        paywallLogs.append(PaywallLogEntry(level: level, message: message))
+    }
 }
