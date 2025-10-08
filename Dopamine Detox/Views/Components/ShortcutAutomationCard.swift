@@ -4,12 +4,11 @@ import UIKit
 
 struct ShortcutAutomationCard: View {
     @State private var appName: String = "Instagram"
-    @State private var redirectTarget: String = "instagram://app"
     @State private var didCopyLink = false
     @State private var showingInstructions = false
 
     private var shortcutURL: URL? {
-        AppConfiguration.makeDetoxInterventionURL(appName: appName, redirectTarget: redirectTarget)
+        AppConfiguration.makeDetoxInterventionURL(appName: appName)
     }
 
     var body: some View {
@@ -36,7 +35,7 @@ struct ShortcutAutomationCard: View {
             .controlSize(.large)
 
             VStack(alignment: .leading, spacing: 12) {
-                Text("Personaliza el enlace")
+                Text("Configura el enlace")
                     .font(.subheadline)
                     .fontWeight(.semibold)
 
@@ -44,12 +43,6 @@ struct ShortcutAutomationCard: View {
                     .textInputAutocapitalization(.words)
                     .disableAutocorrection(true)
                     .textFieldStyle(.roundedBorder)
-
-                TextField("URL para continuar", text: $redirectTarget)
-                    .textInputAutocapitalization(.never)
-                    .disableAutocorrection(true)
-                    .textFieldStyle(.roundedBorder)
-                    .keyboardType(.URL)
 
                 if let urlString = shortcutURL?.absoluteString {
                     Text(urlString)
@@ -87,9 +80,6 @@ struct ShortcutAutomationCard: View {
         .onChange(of: appName) { _ in
             didCopyLink = false
         }
-        .onChange(of: redirectTarget) { _ in
-            didCopyLink = false
-        }
         .sheet(isPresented: $showingInstructions) {
             NavigationStack {
                 ScrollView {
@@ -100,15 +90,11 @@ struct ShortcutAutomationCard: View {
                         VStack(alignment: .leading, spacing: 16) {
                             StepView(number: 1, text: "En la app Atajos, crea una Automatización Personal al abrir la app que te distrae.")
                             StepView(number: 2, text: "Pulsa Añadir acción, ve a Apps → Dotox y selecciona \"Mostrar muro de calma\".")
-                            StepView(number: 3, text: "Rellena el nombre de la app y pega el enlace personalizado. Desactiva \"Preguntar antes de ejecutar\".")
+                            StepView(number: 3, text: "Introduce el nombre de la app en Dotox y desactiva \"Preguntar antes de ejecutar\".")
                         }
 
                         VStack(alignment: .leading, spacing: 12) {
                             Text("Si no ves Dotox en la lista de apps, ábrela una vez y vuelve a Atajos para actualizar las acciones disponibles.")
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
-
-                            Text("El campo \"URL para continuar\" te permite volver automáticamente a la app original tras completar el muro de calma.")
                                 .font(.footnote)
                                 .foregroundStyle(.secondary)
                         }
