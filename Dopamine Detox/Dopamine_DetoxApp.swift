@@ -15,33 +15,32 @@ struct Dopamine_DetoxApp: App {
             ContentView()
                 .environmentObject(appState)
                 .onOpenURL { url in
-                    handle(url: url)
+                    Task { @MainActor in
+                        handle(url: url)
+                    }
                 }
         }
     }
 }
 
+@MainActor
 private extension Dopamine_DetoxApp {
     func handle(url: URL) {
         guard url.scheme?.lowercased() == AppConfiguration.detoxInterventionScheme else { return }
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return }
+        guard components.host?.lowercased() == AppConfiguration.detoxInterventionHost else { return }
 
-        let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-        let host = components?.host?.lowercased()
+        let appName = components.queryItems?.first(where: { $0.name == "app" })?.value ?? ""
 
-        guard host == AppConfiguration.detoxInterventionHost else { return }
-
-        let appName = components?.queryItems?.first(where: { $0.name == "app" })?.value ?? ""
-        let redirectValue = components?.queryItems?.first(where: { $0.name == "redirect" })?.value
         let redirectURL: URL?
-        if let redirectValue, !redirectValue.isEmpty {
+        if let redirectValue = components.queryItems?.first(where: { $0.name == "redirect" })?.value,
+           !redirectValue.isEmpty {
             let decoded = redirectValue.removingPercentEncoding ?? redirectValue
             redirectURL = URL(string: decoded)
         } else {
             redirectURL = nil
         }
 
-        Task { @MainActor in
-            appState.presentIntervention(appName: appName, redirectURL: redirectURL)
-        }
+        appState.presentIntervention(appName: appName, redirectURL: redirectURL)
     }
 }
