@@ -12,6 +12,11 @@ struct ContentView: View {
             }
         }
         .animation(.easeInOut, value: appState.hasCompletedOnboarding)
+        .sheet(item: $appState.pendingIntervention) { intervention in
+            DetoxInterventionWall(intervention: intervention) {
+                appState.clearIntervention()
+            }
+        }
     }
 }
 
