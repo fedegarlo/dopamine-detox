@@ -1,6 +1,5 @@
 import Foundation
 import SwiftUI
-import UIKit
 
 struct DetoxInterventionWall: View {
     let intervention: DetoxIntervention
@@ -53,18 +52,13 @@ struct DetoxInterventionWall: View {
                         }
                         .buttonStyle(.borderedProminent)
 
-                        if let redirectURL = intervention.redirectURL {
-                            Button {
-                                onDismiss()
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                                    UIApplication.shared.open(redirectURL, options: [:], completionHandler: nil)
-                                }
-                            } label: {
-                                Text("Continuar a \(intervention.displayName)")
-                                    .frame(maxWidth: .infinity)
-                            }
-                            .buttonStyle(.bordered)
+                        Button {
+                            onDismiss()
+                        } label: {
+                            Text("Continuar igualmente")
+                                .frame(maxWidth: .infinity)
                         }
+                        .buttonStyle(.bordered)
                     }
                 }
                 .padding()
@@ -86,7 +80,7 @@ struct DetoxInterventionWall: View {
 
 #Preview {
     DetoxInterventionWall(
-        intervention: DetoxIntervention(appName: "Instagram", redirectURL: URL(string: "instagram://app")),
+        intervention: DetoxIntervention(appName: "Instagram"),
         onDismiss: {}
     )
 }

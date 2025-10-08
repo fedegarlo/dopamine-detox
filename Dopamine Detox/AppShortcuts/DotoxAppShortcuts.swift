@@ -10,17 +10,12 @@ struct ShowCalmWallIntent: AppIntent {
     @Parameter(title: "Nombre de la app", default: "Instagram")
     var appName: String
 
-    @Parameter(title: "URL para continuar", default: "")
-    var redirectTarget: String
-
     static var parameterSummary: some ParameterSummary {
-        Summary("Mostrar muro de calma antes de abrir \(\.$appName)") {
-            \.$redirectTarget
-        }
+        Summary("Mostrar muro de calma antes de abrir \(\.$appName)")
     }
 
     func perform() async throws -> some IntentResult {
-        guard let url = AppConfiguration.makeDetoxInterventionURL(appName: appName, redirectTarget: redirectTarget) else {
+        guard let url = AppConfiguration.makeDetoxInterventionURL(appName: appName) else {
             throw ShowCalmWallIntentError.invalidConfiguration
         }
 

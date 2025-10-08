@@ -106,8 +106,8 @@ final class AppState: ObservableObject {
         journalEntries.insert(entry, at: 0)
     }
 
-    func presentIntervention(appName: String, redirectURL: URL?) {
-        pendingIntervention = DetoxIntervention(appName: appName, redirectURL: redirectURL)
+    func presentIntervention(appName: String) {
+        pendingIntervention = DetoxIntervention(appName: appName)
     }
 
     func clearIntervention() {

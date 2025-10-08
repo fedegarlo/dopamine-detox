@@ -32,15 +32,6 @@ private extension Dopamine_DetoxApp {
 
         let appName = components.queryItems?.first(where: { $0.name == "app" })?.value ?? ""
 
-        let redirectURL: URL?
-        if let redirectValue = components.queryItems?.first(where: { $0.name == "redirect" })?.value,
-           !redirectValue.isEmpty {
-            let decoded = redirectValue.removingPercentEncoding ?? redirectValue
-            redirectURL = URL(string: decoded)
-        } else {
-            redirectURL = nil
-        }
-
-        appState.presentIntervention(appName: appName, redirectURL: redirectURL)
+        appState.presentIntervention(appName: appName)
     }
 }
