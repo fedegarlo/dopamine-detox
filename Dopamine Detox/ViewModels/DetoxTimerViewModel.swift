@@ -11,21 +11,17 @@ final class DetoxTimerViewModel: ObservableObject {
 
     private var timer: AnyCancellable?
     private unowned let appState: AppState
-    private let focusAutomationManager: FocusAutomationManager
-
-    init(appState: AppState, focusAutomationManager: FocusAutomationManager = .shared) {
+    init(appState: AppState) {
         self.appState = appState
-        self.focusAutomationManager = focusAutomationManager
         if let active = appState.activeSession {
             selectedDuration = active.duration
             let remaining = active.endsAt.timeIntervalSinceNow
             remainingTime = max(remaining, 0)
             isRunning = remaining > 0
-            
-            // Resume timer and Focus if session is still active
+
+            // Resume timer if session is still active
             if isRunning {
                 startTimer()
-                focusAutomationManager.beginDetoxSession()
             }
         } else {
             let defaultDuration: DetoxDuration = .oneHour
@@ -79,7 +75,6 @@ final class DetoxTimerViewModel: ObservableObject {
         isRunning = true
         showCelebration = false
         startTimer()
-        focusAutomationManager.beginDetoxSession()
     }
 
     func dismissCelebration() {
@@ -110,7 +105,6 @@ final class DetoxTimerViewModel: ObservableObject {
         isRunning = false
         appState.recordSessionCompletion(session, aborted: true)
         appState.updateActiveSession(nil)
-        focusAutomationManager.endDetoxSession()
     }
 
     private func startTimer() {
@@ -147,7 +141,6 @@ final class DetoxTimerViewModel: ObservableObject {
         showCelebration = true
         appState.recordSessionCompletion(session, aborted: false)
         appState.updateActiveSession(nil)
-        focusAutomationManager.endDetoxSession()
     }
 
     private func stopTimer() {

@@ -12,6 +12,7 @@ final class AppState: ObservableObject {
     @Published var completedSessionCount: Int
     @Published var journalEntries: [JournalEntry]
     @Published var achievements: [Achievement]
+    @Published var pendingIntervention: DetoxIntervention?
 
     private enum StorageKeys: String {
         case dopamineIndex
@@ -45,6 +46,7 @@ final class AppState: ObservableObject {
         journalEntries = JournalEntry.sampleData
         achievements = Achievement.defaults()
         updateAchievements()
+        pendingIntervention = nil
 
         // Restore persisted active session if any
         if let data = defaults.data(forKey: StorageKeys.activeSession.rawValue),
@@ -102,6 +104,14 @@ final class AppState: ObservableObject {
 
     func addJournalEntry(_ entry: JournalEntry) {
         journalEntries.insert(entry, at: 0)
+    }
+
+    func presentIntervention(appName: String, redirectURL: URL?) {
+        pendingIntervention = DetoxIntervention(appName: appName, redirectURL: redirectURL)
+    }
+
+    func clearIntervention() {
+        pendingIntervention = nil
     }
 
     private func persistPastSessions(using userDefaults: UserDefaults) {
