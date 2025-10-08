@@ -24,7 +24,7 @@ struct ShowCalmWallIntent: AppIntent {
             throw ShowCalmWallIntentError.invalidConfiguration
         }
 
-        return .result(opening: url)
+        return .result(value: url)
     }
 }
 
@@ -33,18 +33,16 @@ struct DotoxAppShortcuts: AppShortcutsProvider {
     static var shortcutTileColor: ShortcutTileColor = .blue
 
     static var appShortcuts: [AppShortcut] {
-        [
-            AppShortcut(
-                intent: ShowCalmWallIntent(),
-                phrases: [
-                    "Mostrar muro de calma en \(.applicationName)",
-                    "Abrir Dotox",
-                    "Quiero calma antes de usar \(.applicationName)"
-                ],
-                shortTitle: "Muro de calma",
-                systemImageName: "brain.head.profile"
-            )
-        ]
+        AppShortcut(
+            intent: ShowCalmWallIntent(),
+            phrases: [
+                "Mostrar muro de calma en \(.applicationName)",
+                "Abrir Dotox",
+                "Quiero calma antes de usar \(.applicationName)"
+            ],
+            shortTitle: "Muro de calma",
+            systemImageName: "brain.head.profile"
+        )
     }
 }
 
