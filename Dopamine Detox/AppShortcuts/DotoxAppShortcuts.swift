@@ -37,7 +37,7 @@ struct DotoxAppShortcuts: AppShortcutsProvider {
             intent: ShowCalmWallIntent(),
             phrases: [
                 "Mostrar muro de calma en \(.applicationName)",
-                "Abrir Dotox",
+                "Abrir Dotox antes de usar \(.applicationName)",
                 "Quiero calma antes de usar \(.applicationName)"
             ],
             shortTitle: "Muro de calma",
