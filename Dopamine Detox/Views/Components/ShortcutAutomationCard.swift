@@ -6,22 +6,10 @@ struct ShortcutAutomationCard: View {
     @State private var appName: String = "Instagram"
     @State private var redirectTarget: String = "instagram://app"
     @State private var didCopyLink = false
+    @State private var showingInstructions = false
 
     private var shortcutURL: URL? {
-        var components = URLComponents()
-        components.scheme = AppConfiguration.detoxInterventionScheme
-        components.host = AppConfiguration.detoxInterventionHost
-
-        var items: [URLQueryItem] = []
-        if !appName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            items.append(URLQueryItem(name: "app", value: appName))
-        }
-        if !redirectTarget.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            items.append(URLQueryItem(name: "redirect", value: redirectTarget))
-        }
-        components.queryItems = items.isEmpty ? nil : items
-
-        return components.url
+        AppConfiguration.makeDetoxInterventionURL(appName: appName, redirectTarget: redirectTarget)
     }
 
     var body: some View {
@@ -34,11 +22,18 @@ struct ShortcutAutomationCard: View {
                     .foregroundStyle(.secondary)
             }
 
-            VStack(alignment: .leading, spacing: 12) {
-                StepView(number: 1, text: "En la app Atajos, crea una Automatización Personal al abrir la app que te distrae.")
-                StepView(number: 2, text: "Selecciona Ejecutar Atajo y elige el atajo Dopamine Detox (lo verás tras crearlo una vez).")
-                StepView(number: 3, text: "Configura el atajo para abrir este enlace personalizado y mostrarte el muro de calma antes de continuar.")
+            Text("Crea una automatización personal que abra Dotox antes de tus apps más tentadoras.")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+
+            Button {
+                showingInstructions = true
+            } label: {
+                Label("Añadir app", systemImage: "plus.circle.fill")
+                    .frame(maxWidth: .infinity)
             }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
 
             VStack(alignment: .leading, spacing: 12) {
                 Text("Personaliza el enlace")
@@ -94,6 +89,45 @@ struct ShortcutAutomationCard: View {
         }
         .onChange(of: redirectTarget) { _ in
             didCopyLink = false
+        }
+        .sheet(isPresented: $showingInstructions) {
+            NavigationStack {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        Text("Sigue estos pasos para mostrar el muro de calma antes de abrir una app concreta.")
+                            .font(.subheadline)
+
+                        VStack(alignment: .leading, spacing: 16) {
+                            StepView(number: 1, text: "En la app Atajos, crea una Automatización Personal al abrir la app que te distrae.")
+                            StepView(number: 2, text: "Pulsa Añadir acción, ve a Apps → Dotox y selecciona \"Mostrar muro de calma\".")
+                            StepView(number: 3, text: "Rellena el nombre de la app y pega el enlace personalizado. Desactiva \"Preguntar antes de ejecutar\".")
+                        }
+
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Si no ves Dotox en la lista de apps, ábrela una vez y vuelve a Atajos para actualizar las acciones disponibles.")
+                                .font(.footnote)
+                                .foregroundStyle(.secondary)
+
+                            Text("El campo \"URL para continuar\" te permite volver automáticamente a la app original tras completar el muro de calma.")
+                                .font(.footnote)
+                                .foregroundStyle(.secondary)
+                        }
+
+                        Link("Abrir la app Atajos", destination: URL(string: "shortcuts://")!)
+                            .font(.footnote)
+                    }
+                    .padding()
+                }
+                .navigationTitle("Añadir app")
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Cerrar") {
+                            showingInstructions = false
+                        }
+                    }
+                }
+            }
+            .presentationDetents([.medium, .large])
         }
     }
 }
