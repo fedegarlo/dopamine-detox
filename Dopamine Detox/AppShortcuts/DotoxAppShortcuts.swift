@@ -14,8 +14,11 @@ struct ShowCalmWallIntent: AppIntent {
     }
     
     func perform() async throws -> some IntentResult {
-        // La URL se manejará en el AppDelegate/SceneDelegate cuando la app se abra
-        return .result()
+        guard let url = AppConfiguration.makeDetoxInterventionURL(appName: appName) else {
+            return .result()
+        }
+
+        return .openApp(at: url)
     }
 }
 

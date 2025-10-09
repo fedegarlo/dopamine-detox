@@ -1,7 +1,14 @@
 import Foundation
 
 enum AppConfiguration {
+    /// Custom URL scheme declared in Info.plist under `URL types` so the system knows
+    /// the Dopamine Detox app can be opened with links that start with
+    /// `dopaminedetox://`.
     static let detoxInterventionScheme = "dopaminedetox"
+
+    /// Host used for the intervention deep link. Combined with the scheme above it
+    /// builds `dopaminedetox://intervention` which the app handles in
+    /// `Dopamine_DetoxApp.handle(url:)` to present the calm wall.
     static let detoxInterventionHost = "intervention"
 
     static func makeDetoxInterventionURL(appName: String) -> URL? {
