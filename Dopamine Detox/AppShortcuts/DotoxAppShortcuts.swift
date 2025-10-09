@@ -13,7 +13,7 @@ struct ShowCalmWallIntent: AppIntent {
     var appName: String
 
     static var parameterSummary: some ParameterSummary {
-        Summary("Mostrar muro de calma antes de abrir \(\.$appName)")
+        Summary("Mostrar muro de calma antes de abrir", \.$appName)
     }
 
     func perform() async throws -> some IntentResult {
@@ -34,9 +34,9 @@ struct DotoxAppShortcuts: AppShortcutsProvider {
         AppShortcut(
             intent: ShowCalmWallIntent(),
             phrases: [
-                "Mostrar muro de calma en \(.appName)",
-                "Abrir Dotox antes de usar \(.appName)",
-                "Quiero calma antes de usar \(.appName)"
+                "Mostrar muro de calma en \(.applicationName)",
+                "Abrir Dotox antes de usar \(.applicationName)",
+                "Quiero calma antes de usar \(.applicationName)"
             ],
             shortTitle: "Muro de calma",
             systemImageName: "brain.head.profile"
