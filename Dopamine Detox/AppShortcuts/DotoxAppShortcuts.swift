@@ -13,7 +13,7 @@ struct ShowCalmWallIntent: AppIntent {
     var appName: String
 
     static var parameterSummary: some ParameterSummary {
-        Summary("Mostrar muro de calma antes de abrir", \.$appName)
+        Summary("Mostrar muro de calma antes de abrir \(.$appName)")
     }
 
     func perform() async throws -> some IntentResult {
