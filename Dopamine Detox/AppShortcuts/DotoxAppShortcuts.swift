@@ -7,6 +7,8 @@ struct ShowCalmWallIntent: AppIntent {
     static var description = IntentDescription("Abre Dotox para mostrar el muro de calma antes de continuar con otra app.")
     static var openAppWhenRun: Bool = true
 
+    @Dependency(\.openURL) private var openURL
+
     @Parameter(title: "Nombre de la app", default: "Instagram")
     var appName: String
 
@@ -19,7 +21,8 @@ struct ShowCalmWallIntent: AppIntent {
             throw ShowCalmWallIntentError.invalidConfiguration
         }
 
-        return .result(value: url)
+        try await openURL(url)
+        return .result()
     }
 }
 

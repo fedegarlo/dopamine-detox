@@ -14,109 +14,113 @@ struct DetoxTimerView: View {
     }
 
     var body: some View {
-        VStack(spacing: 24) {
-            VStack(spacing: 12) {
-                Text("Choose your detox length")
-                    .font(.title3)
-                    .fontWeight(.semibold)
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: 24) {
+                VStack(spacing: 12) {
+                    Text("Choose your detox length")
+                        .font(.title3)
+                        .fontWeight(.semibold)
 
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 16) {
-                        ForEach(DetoxDuration.allCases) { duration in
-                            Button {
-                                guard !viewModel.isRunning else { return }
-                                viewModel.selectedDuration = duration
-                                viewModel.remainingTime = duration.rawValue
-                            } label: {
-                                VStack(spacing: 8) {
-                                    Text(duration.label)
-                                        .font(.title2)
-                                        .fontWeight(.bold)
-                                    Text(duration.description)
-                                        .font(.caption)
-                                        .multilineTextAlignment(.center)
-                                        .foregroundStyle(.secondary)
-                                        .frame(width: 120)
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 16) {
+                            ForEach(DetoxDuration.allCases) { duration in
+                                Button {
+                                    guard !viewModel.isRunning else { return }
+                                    viewModel.selectedDuration = duration
+                                    viewModel.remainingTime = duration.rawValue
+                                } label: {
+                                    VStack(spacing: 8) {
+                                        Text(duration.label)
+                                            .font(.title2)
+                                            .fontWeight(.bold)
+                                        Text(duration.description)
+                                            .font(.caption)
+                                            .multilineTextAlignment(.center)
+                                            .foregroundStyle(.secondary)
+                                            .frame(width: 120)
+                                    }
+                                    .padding()
+                                    .frame(width: 160, height: 140)
+                                    .background(viewModel.selectedDuration == duration ? Color.accentColor.opacity(0.2) : Color(.secondarySystemBackground))
+                                    .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                            .stroke(viewModel.selectedDuration == duration ? Color.accentColor : Color.clear, lineWidth: 2)
+                                    )
                                 }
-                                .padding()
-                                .frame(width: 160, height: 140)
-                                .background(viewModel.selectedDuration == duration ? Color.accentColor.opacity(0.2) : Color(.secondarySystemBackground))
-                                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                                        .stroke(viewModel.selectedDuration == duration ? Color.accentColor : Color.clear, lineWidth: 2)
-                                )
                             }
+                        }
+                        .padding(.horizontal)
+                        .padding(.vertical)
+                    }
+                }
+
+                VStack(spacing: 16) {
+                    ZStack {
+                        Circle()
+                            .stroke(Color(.systemGray5), style: StrokeStyle(lineWidth: 12, lineCap: .round))
+                            .rotationEffect(.degrees(-90))
+                            .frame(width: 220, height: 220)
+
+                        Circle()
+                            .trim(from: 0, to: viewModel.isRunning ? viewModel.progress : 0)
+                            .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 12, lineCap: .round))
+                            .rotationEffect(.degrees(-90))
+                            .frame(width: 220, height: 220)
+                            .animation(.easeInOut(duration: 0.3), value: viewModel.progress)
+
+                        VStack(spacing: 8) {
+                            Text(viewModel.formattedRemaining)
+                                .font(.largeTitle)
+                                .monospacedDigit()
+                                .fontWeight(.bold)
+                            Text(viewModel.isRunning ? "Focus mode" : "Ready when you are")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+
+                    HStack(spacing: 16) {
+                        if viewModel.isRunning {
+                            Button(role: .destructive) {
+                                viewModel.cancelSession()
+                            } label: {
+                                Label("Abort", systemImage: "xmark.circle")
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 18)
+                            }
+                            .buttonStyle(.bordered)
+                        } else {
+                            Button {
+                                handleStartTapped()
+                            } label: {
+                                if isCheckingAccess {
+                                    ProgressView()
+                                        .frame(maxWidth: .infinity)
+                                } else {
+                                    Label("Start detox", systemImage: "play.circle.fill")
+                                        .frame(maxWidth: .infinity)
+                                        .padding(.vertical, 16)
+                                }
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .controlSize(.large)
+                            .disabled(isCheckingAccess)
                         }
                     }
                     .padding(.horizontal)
-                    .padding(.vertical)
+                    .padding(.top)
                 }
+
+                ShortcutAutomationCard()
+                    .padding(.horizontal)
+
+                Spacer(minLength: 32)
             }
-
-            VStack(spacing: 16) {
-                ZStack {
-                    Circle()
-                        .stroke(Color(.systemGray5), style: StrokeStyle(lineWidth: 12, lineCap: .round))
-                        .rotationEffect(.degrees(-90))
-                        .frame(width: 220, height: 220)
-
-                    Circle()
-                        .trim(from: 0, to: viewModel.isRunning ? viewModel.progress : 0)
-                        .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 12, lineCap: .round))
-                        .rotationEffect(.degrees(-90))
-                        .frame(width: 220, height: 220)
-                        .animation(.easeInOut(duration: 0.3), value: viewModel.progress)
-
-                    VStack(spacing: 8) {
-                        Text(viewModel.formattedRemaining)
-                            .font(.largeTitle)
-                            .monospacedDigit()
-                            .fontWeight(.bold)
-                        Text(viewModel.isRunning ? "Focus mode" : "Ready when you are")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-
-                HStack(spacing: 16) {
-                    if viewModel.isRunning {
-                        Button(role: .destructive) {
-                            viewModel.cancelSession()
-                        } label: {
-                            Label("Abort", systemImage: "xmark.circle")
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 18)
-                        }
-                        .buttonStyle(.bordered)
-                    } else {
-                        Button {
-                            handleStartTapped()
-                        } label: {
-                            if isCheckingAccess {
-                                ProgressView()
-                                    .frame(maxWidth: .infinity)
-                            } else {
-                                Label("Start detox", systemImage: "play.circle.fill")
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 16)
-                            }
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .controlSize(.large)
-                        .disabled(isCheckingAccess)
-                    }
-                }
-                .padding(.horizontal)
-                .padding(.top)
-            }
-
-            ShortcutAutomationCard()
-                .padding(.horizontal)
-
-            Spacer()
+            .frame(maxWidth: .infinity)
+            .padding(.top, 24)
+            .padding(.bottom, 48)
         }
-        .padding(.top, 24)
         .overlay(alignment: .bottom) {
             if viewModel.showCelebration {
                 CelebrationBanner()
