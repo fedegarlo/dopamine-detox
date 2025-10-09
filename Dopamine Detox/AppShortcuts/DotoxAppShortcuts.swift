@@ -14,11 +14,10 @@ struct ShowCalmWallIntent: AppIntent {
     }
     
     func perform() async throws -> some IntentResult {
-        guard let url = AppConfiguration.makeDetoxInterventionURL(appName: appName) else {
-            return .result()
+        guard let url = await AppConfiguration.makeDetoxInterventionURL(appName: appName) else {
+            return .result(value: "dotox://error")
         }
-
-        return .openApp(at: url)
+        return .result(value: url.absoluteString)
     }
 }
 
